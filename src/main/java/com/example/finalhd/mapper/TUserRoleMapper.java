@@ -1,6 +1,6 @@
 package com.example.finalhd.mapper;
 
-import com.example.finalhd.entity.TUser;
+import com.example.finalhd.entity.TUserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,7 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author zhang
  * @since 2022-02-10
  */
-public interface TUserMapper extends BaseMapper<TUser> {
-TUser loadUserByUsername(String username);
+public interface TUserRoleMapper extends BaseMapper<TUserRole> {
 
 }
