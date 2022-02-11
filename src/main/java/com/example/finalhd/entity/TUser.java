@@ -31,12 +31,6 @@ public class TUser implements Serializable, UserDetails {
     @ApiModelProperty(value = "用户id")
     private Long id;
 
-    @ApiModelProperty(value = "头像")
-    private String avatar;
-
-    @ApiModelProperty(value = "创建时间")
-    private LocalDateTime createTime;
-
     @ApiModelProperty(value = "邮箱")
     private String email;
 
@@ -48,9 +42,6 @@ public class TUser implements Serializable, UserDetails {
 
     @ApiModelProperty(value = "角色")
     private Integer type;
-
-    @ApiModelProperty(value = "更新时间")
-    private LocalDateTime updateTime;
 
     @ApiModelProperty(value = "用户名")
     private String username;

@@ -3,17 +3,18 @@
 <mapper namespace="com.example.finalhd.mapper.TUserMapper">
     <resultMap id="BaseResultMap" type="com.example.finalhd.entity.TUser" >
         <id column="id" property="id"  />
-        <result column="avatar" property="avatar" />
-        <result column="createTime" property="createTime" />
         <result column="email" property="email"  />
         <result column="nickname" property="nickname"  />
         <result column="password" property="password"  />
         <result column="type" property="type"  />
-        <result column="updateTime" property="updateTime"  />
         <result column="username" property="username"  />
     </resultMap>
 
     <select id="loadUserByUsername" resultMap="BaseResultMap">
- select * from t_user where username=username
+ select * from t_user where username=#{username}
 </select>
+    <insert id="regist">
+
+        insert into t_user(id,username,password) value (id,#{username},#{password})
+    </insert>
 </mapper>
