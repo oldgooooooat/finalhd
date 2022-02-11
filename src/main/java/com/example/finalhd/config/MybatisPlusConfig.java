@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@MapperScan("com.xlblog.blog.mapper")
+@MapperScan("com.example.finalhd")
 public class MybatisPlusConfig {
     @Bean
     public PaginationInterceptor paginationInterceptor() {

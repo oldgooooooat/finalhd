@@ -6,7 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.example")
 public class FinalhdApplication {
 
     public static void main(String[] args) {
