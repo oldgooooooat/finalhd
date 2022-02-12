@@ -15,7 +15,9 @@ import org.apache.ibatis.annotations.Param;
 public interface TUserMapper extends BaseMapper<TUser> {
 TUser loadUserByUsername(String username);
 void regist(@Param("username") String username,
-            @Param("password") String password
+            @Param("password") String password,
+            @Param("email") String email,
+            @Param("nickname") String nickname
             );
 
 }

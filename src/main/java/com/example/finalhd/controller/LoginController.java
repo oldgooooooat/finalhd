@@ -7,9 +7,11 @@ import com.example.finalhd.util.RespBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 @RestController
 public class LoginController {
@@ -21,16 +23,20 @@ public class LoginController {
     @Resource
     TUserServiceImpl tUserService;
     @PostMapping("/regist")
-    public RespBean regist(String username,String password)
+    public RespBean regist(@RequestBody Map<String,String> params)
     {
-     boolean flag=tUserService.register(username,password);
+        String username=params.get("username");
+        String password=params.get("password");
+        String email=params.get("email");
+        String nickname=params.get("nickname");
+     boolean flag=tUserService.register(username,password,email,nickname);
     if (flag)
     {
-        return RespBean.ok("ok");
+        return RespBean.ok("注册成功");
     }
     else
     {
-        return  RespBean.error("no");
+        return  RespBean.error("用户名已存在");
     }
     }
 
