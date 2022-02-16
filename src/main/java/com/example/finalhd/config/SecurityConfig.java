@@ -46,8 +46,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.authorizeRequests()
                 .antMatchers("/regist").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/*/api-docs").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -86,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                         //这是往出写的
                         PrintWriter out = resp.getWriter();
-                        RespBean respBean = RespBean.error("登录失败！");
+                        RespBean respBean = RespBean.error("账号密码错误，登录失败！");
                         if(exception instanceof LockedException){
                             respBean.setMsg("账户被锁定，请联系管理员！");
                         }else if (exception instanceof CredentialsExpiredException){
