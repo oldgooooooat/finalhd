@@ -16,5 +16,5 @@ import java.util.List;
  */
 public interface QuestionService extends IService<Question> {
  List<Question> selectallquestion();
-
+ boolean addquestion(Question question);
 }

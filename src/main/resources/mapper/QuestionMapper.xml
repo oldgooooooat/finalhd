@@ -5,5 +5,27 @@
            >
        select * from question
    </select>
-
+   <insert id="addquestion" parameterType="com.example.finalhd.entity.Question">
+   insert into(question_id,question_name,
+       question_score,
+       question_creator_id,
+       question_level_id,
+       question_type_id,
+       question_category_id,
+       question_description,
+       question_option_ids,
+       question_answer_option_ids,
+       create_time
+       )
+values(#{question_score},
+       #{question_creator_id},
+       #{question_level_id},
+       #{question_type_id},
+       #{question_category_id},
+       #{question_description},
+       #{question_option_ids},
+       #{question_answer_option_ids},
+       #{create_time}
+       )
+   </insert>
 </mapper>

@@ -26,4 +26,10 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
 
         return questionMapper.selectallquestion();
     }
+
+    @Override
+    public boolean addquestion(Question question) {
+        questionMapper.addquestion(question);
+        return true;
+    }
 }
