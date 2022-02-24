@@ -28,8 +28,14 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     }
 
     @Override
-    public boolean addquestion(Question question) {
-        questionMapper.addquestion(question);
-        return true;
+    public int deletequestion(String questionid) {
+        return questionMapper.deletequestion(questionid);
     }
+
+    @Override
+    public int deletequestionoption(String questionoptionid) {
+        return questionMapper.deletequestionoption(questionoptionid);
+    }
+
+
 }

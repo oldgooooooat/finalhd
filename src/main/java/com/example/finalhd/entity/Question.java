@@ -30,8 +30,6 @@ public class Question implements Serializable {
     @ApiModelProperty(value = "题目的名字")
     private String questionName;
 
-    @ApiModelProperty(value = "题目的分数")
-    private Integer questionScore;
 
     @ApiModelProperty(value = "题目创建者的用户id")
     private String questionCreatorId;

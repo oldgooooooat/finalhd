@@ -15,5 +15,7 @@ import java.util.List;
  */
 public interface QuestionMapper extends BaseMapper<Question> {
   List<Question> selectallquestion();
-  void addquestion(Question question);
+  int deletequestion(String questionid);
+  int deletequestionoption(String questionoptionid);
+
 }

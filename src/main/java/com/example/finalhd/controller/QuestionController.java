@@ -12,6 +12,7 @@ import com.example.finalhd.util.RespBean;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +30,48 @@ import java.util.Map;
 @RequestMapping("/question")
 public class QuestionController {
 
+
 @Resource
 QuestionServiceImpl questionServiceimpl;
+
+    @PostMapping("/selectquestionoption")
+            public  RespBean selectquestionoption(@RequestBody Map<String,Object> params)
+    {
+        System.out.println(params);
+        List<QuestionOption> questionOptions =new ArrayList<>();
+        String questionpotion=(String) params.get("questionOptionIds");
+        for (String retval: questionpotion.split("-")){
+
+            questionOptions.add(questionOptionServiceimpl.getById(retval));
+        }
+      System.out.println(questionOptions);
+        return RespBean.ok("1",questionOptions);
+    }
+    @PostMapping("/deletequestion")
+    public  RespBean deletequestion(@RequestBody List<Map<String,Object>> params)
+        {
+            System.out.println(params);
+            for (int i=0;i<params.size();i++)
+            {
+              Map<String,Object> question=params.get(i);
+              String questionid= (String) question.get("questionId");
+              System.out.println(questionid);
+              questionServiceimpl.deletequestion(questionid);
+              String questionoption= (String) question.get("questionOptionIds");
+                for (String retval: questionoption.split("-")){
+
+                 questionServiceimpl.deletequestionoption(retval);
+                }
+            }
+            return RespBean.ok("删除成功");
+         }
     @GetMapping("/selectallquestion")
     public RespBean selectallquestion()
 
     {
         List<Question> allquestion=questionServiceimpl.selectallquestion();
         if (allquestion!=null) {
-            return RespBean.ok("查询成功", allquestion);
+            return RespBean.ok("操作成功", allquestion);
         }
         else
         {
