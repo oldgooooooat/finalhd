@@ -2,8 +2,11 @@ package com.example.finalhd.controller;
 
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.json.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.finalhd.entity.Question;
 import com.example.finalhd.entity.QuestionOption;
+import com.example.finalhd.mapper.QuestionMapper;
 import com.example.finalhd.service.QuestionOptionService;
 import com.example.finalhd.service.QuestionService;
 import com.example.finalhd.service.impl.QuestionOptionServiceImpl;
@@ -34,6 +37,39 @@ public class QuestionController {
 @Resource
 QuestionServiceImpl questionServiceimpl;
 
+    @PostMapping("/changequestion")
+
+    public  RespBean changequestion(@RequestBody Map<String,Object> params){
+        Map<String,Object> questiondetail= (Map<String, Object>) params.get("questiondetail1");
+        UpdateWrapper<Question> updateWrapper=new UpdateWrapper<>();
+        updateWrapper.eq("question_id",questiondetail.get("questionId"))
+                .set("question_name",questiondetail.get("questionName"))
+                .set("question_level_id",questiondetail.get("questionLevelId"))
+                .set("question_description",questiondetail.get("questionDescription"))
+                .set("update_time",LocalDateTime.now());
+        questionServiceimpl.update(null,updateWrapper);
+        List<Map<String,Object>> questionoption= (List<Map<String, Object>>) params.get("questionoptiondetail1");
+        for (int i=0;i<questionoption.size();i++)
+        {
+            UpdateWrapper<QuestionOption> updateWrapper1=new UpdateWrapper<>();
+            updateWrapper1.eq("question_option_id",questionoption.get(i).get("questionOptionId"))
+                    .set("question_option_content",questionoption.get(i).get("questionOptionContent"));
+             questionOptionServiceimpl.update(null,updateWrapper1);
+        }
+        List<Map<String,Object>> questionoption1= (List<Map<String, Object>>) params.get("rquestionoption");
+        for (int i=0;i<questionoption1.size();i++)
+        {
+            UpdateWrapper<QuestionOption> updateWrapper1=new UpdateWrapper<>();
+            updateWrapper1.eq("question_option_id",questionoption1.get(i).get("questionOptionId"))
+                    .set("question_option_content",questionoption1.get(i).get("questionOptionContent"));
+            questionOptionServiceimpl.update(null,updateWrapper1);
+        }
+
+        System.out.println(params);
+
+        return RespBean.ok("修改成功");
+
+    }
     @PostMapping("/selectquestionoption")
             public  RespBean selectquestionoption(@RequestBody Map<String,Object> params)
     {
@@ -45,7 +81,7 @@ QuestionServiceImpl questionServiceimpl;
             questionOptions.add(questionOptionServiceimpl.getById(retval));
         }
       System.out.println(questionOptions);
-        return RespBean.ok("1",questionOptions);
+        return RespBean.ok("查询成功",questionOptions);
     }
     @PostMapping("/deletequestion")
     public  RespBean deletequestion(@RequestBody List<Map<String,Object>> params)
@@ -96,6 +132,7 @@ QuestionServiceImpl questionServiceimpl;
         Integer userid= (Integer) params.get("userid");
         question.setQuestionCreatorId(Integer.toString(userid));
         question.setQuestionDescription((String) params.get("questioncontext"));
+        question.setQuestionScore(Integer.valueOf((String) params.get("score")));
         question.setQuestionTypeId(Integer.valueOf((String) params.get("option")));
         question.setQuestionLevelId(Integer.valueOf((String) params.get("difficulty")));
 //        question.setQuestionTypeId(1);

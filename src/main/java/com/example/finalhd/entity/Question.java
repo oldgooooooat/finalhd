@@ -39,8 +39,10 @@ public class Question implements Serializable {
 
     @ApiModelProperty(value = "题目的类型，比如单选、多选、判断等")
     private Integer questionTypeId;
-
-
+    @ApiModelProperty(value = "题目分数")
+    private Integer questionScore;
+    @ApiModelProperty(value = "题目科目")
+    private String questionSubject;
     @ApiModelProperty(value = "题目额外的描述")
     private String questionDescription;
 
