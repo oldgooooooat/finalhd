@@ -5,10 +5,12 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.finalhd.entity.Question;
+import com.example.finalhd.entity.QuestionCategory;
 import com.example.finalhd.entity.QuestionOption;
 import com.example.finalhd.mapper.QuestionMapper;
 import com.example.finalhd.service.QuestionOptionService;
 import com.example.finalhd.service.QuestionService;
+import com.example.finalhd.service.impl.QuestionCategoryServiceImpl;
 import com.example.finalhd.service.impl.QuestionOptionServiceImpl;
 import com.example.finalhd.service.impl.QuestionServiceImpl;
 import com.example.finalhd.util.RespBean;
@@ -36,7 +38,32 @@ public class QuestionController {
 
 @Resource
 QuestionServiceImpl questionServiceimpl;
+@Resource
+QuestionCategoryServiceImpl questionCategoryServiceimpl;
+   @GetMapping("/getcategory")
+   public RespBean getcategory(){
+       List<QuestionCategory>questionCategories=questionCategoryServiceimpl.list();
+       return RespBean.ok("查询成功",questionCategories);
+   }
+   @PostMapping("/updatecategory")
+   public RespBean updatecategory(@RequestBody Map<String,Object> params){
+       UpdateWrapper<QuestionCategory> updateWrapper=new UpdateWrapper<>();
+       updateWrapper.eq("question_category_id",params.get("questionCategoryId"))
+               .set("question_category_name",params.get("questionCategoryName"))
+               .set("question_category_description",params.get("questionCategoryDescription"));
+       questionCategoryServiceimpl.update(null,updateWrapper);
 
+       return RespBean.ok("保存成功");
+   }
+   @PostMapping("/savecategory")
+   public RespBean savecategory(@RequestBody Map<String,Object> params)
+   {
+       QuestionCategory questionCategory=new QuestionCategory();
+       questionCategory.setQuestionCategoryName((String) params.get("questionCategoryName"));
+       questionCategory.setQuestionCategoryDescription((String) params.get("questionCategoryDescription"));
+       questionCategoryServiceimpl.save(questionCategory);
+       return RespBean.ok("保存成功");
+   }
     @PostMapping("/changequestion")
 
     public  RespBean changequestion(@RequestBody Map<String,Object> params){
@@ -128,9 +155,10 @@ QuestionServiceImpl questionServiceimpl;
         Question question =new Question();
         question.setQuestionId(IdUtil.simpleUUID());
         question.setQuestionName((String) params.get("questionname"));
-
+        question.setQuestionCategory((Integer) params.get("category"));
         Integer userid= (Integer) params.get("userid");
         question.setQuestionCreatorId(Integer.toString(userid));
+
         question.setQuestionDescription((String) params.get("questioncontext"));
         question.setQuestionScore(Integer.valueOf((String) params.get("score")));
         question.setQuestionTypeId(Integer.valueOf((String) params.get("option")));

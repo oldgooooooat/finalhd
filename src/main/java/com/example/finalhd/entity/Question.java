@@ -42,7 +42,7 @@ public class Question implements Serializable {
     @ApiModelProperty(value = "题目分数")
     private Integer questionScore;
     @ApiModelProperty(value = "题目科目")
-    private String questionSubject;
+    private Integer questionCategory;
     @ApiModelProperty(value = "题目额外的描述")
     private String questionDescription;
 
