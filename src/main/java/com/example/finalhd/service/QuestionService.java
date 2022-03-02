@@ -1,6 +1,6 @@
 package com.example.finalhd.service;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import cn.hutool.json.JSONObject;
 import com.example.finalhd.entity.Question;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @since 2022-02-16
  */
 public interface QuestionService extends IService<Question> {
- List<Question> selectallquestion();
+ List<JSONObject> selectallquestion();
  int deletequestion(String questionid);
  int deletequestionoption(String questionoptionid);
 }

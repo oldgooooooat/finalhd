@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.finalhd.mapper.QuestionMapper">
-   <select id="selectallquestion"    resultType="com.example.finalhd.entity.Question"
+   <select id="selectallquestion"    resultType="com.alibaba.fastjson.JSONObject"
            >
-       select * from question
+       SELECT question_id as questionId,
+              question_name as questionName,
+              question_creator_id as questionCreatorId,
+              question_level_id as questionLevelId,
+              question_type_id as questionTypeId,
+              question_score as questionScore,
+              question_category as questionCategoryid,
+              question_description as questionDescription,
+              question_option_ids as questionOptionIds,
+              question_answer_option_ids as questionAnswerOptionIds,
+              create_time as createTime,
+              update_time as updateTime,
+              question_category_name as questionCategoryName
+       FROM question a,question_category b
+       where a.question_category=b.question_category_id
    </select>
    <delete id="deletequestion" parameterType="com.example.finalhd.entity.Question">
      delete from question where question_id=#{questionid}

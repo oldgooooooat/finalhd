@@ -71,6 +71,7 @@ QuestionCategoryServiceImpl questionCategoryServiceimpl;
         UpdateWrapper<Question> updateWrapper=new UpdateWrapper<>();
         updateWrapper.eq("question_id",questiondetail.get("questionId"))
                 .set("question_name",questiondetail.get("questionName"))
+                .set("question_category",questiondetail.get("questionCategoryid"))
                 .set("question_level_id",questiondetail.get("questionLevelId"))
                 .set("question_description",questiondetail.get("questionDescription"))
                 .set("update_time",LocalDateTime.now());
@@ -132,7 +133,7 @@ QuestionCategoryServiceImpl questionCategoryServiceimpl;
     public RespBean selectallquestion()
 
     {
-        List<Question> allquestion=questionServiceimpl.selectallquestion();
+        List<JSONObject> allquestion=questionServiceimpl.selectallquestion();
         if (allquestion!=null) {
             return RespBean.ok("操作成功", allquestion);
         }

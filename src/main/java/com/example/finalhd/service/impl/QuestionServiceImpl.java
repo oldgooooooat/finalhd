@@ -1,5 +1,6 @@
 package com.example.finalhd.service.impl;
 
+import cn.hutool.json.JSONObject;
 import com.example.finalhd.entity.Question;
 import com.example.finalhd.mapper.QuestionMapper;
 import com.example.finalhd.service.QuestionService;
@@ -22,7 +23,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
 @Resource
   QuestionMapper questionMapper;
     @Override
-    public List<Question> selectallquestion() {
+    public List<JSONObject> selectallquestion() {
 
         return questionMapper.selectallquestion();
     }
