@@ -1,9 +1,10 @@
 package com.example.finalhd.service;
 
-import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import com.example.finalhd.entity.Question;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,4 +19,5 @@ public interface QuestionService extends IService<Question> {
  List<JSONObject> selectallquestion();
  int deletequestion(String questionid);
  int deletequestionoption(String questionoptionid);
+ JSONObject randomquestion(Integer category,Integer questiontype);
 }

@@ -2,7 +2,7 @@ package com.example.finalhd.controller;
 
 
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.finalhd.entity.Question;
 import com.example.finalhd.entity.QuestionCategory;
@@ -40,6 +40,10 @@ public class QuestionController {
 QuestionServiceImpl questionServiceimpl;
 @Resource
 QuestionCategoryServiceImpl questionCategoryServiceimpl;
+
+
+
+
    @GetMapping("/getcategory")
    public RespBean getcategory(){
        List<QuestionCategory>questionCategories=questionCategoryServiceimpl.list();

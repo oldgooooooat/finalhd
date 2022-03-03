@@ -25,4 +25,24 @@
     <delete id="deletequestionoption" parameterType="com.example.finalhd.entity.Question">
         delete from question_option where question_option_id=#{questionoptionid}
     </delete>
+    <select id="randomquestion" resultType="com.alibaba.fastjson.JSONObject" >
+        SELECT question_id as questionId,
+               question_name as questionName,
+               question_creator_id as questionCreatorId,
+               question_level_id as questionLevelId,
+               question_type_id as questionTypeId,
+               question_score as questionScore,
+               question_category as questionCategoryid,
+               question_description as questionDescription,
+               question_option_ids as questionOptionIds,
+               question_answer_option_ids as questionAnswerOptionIds,
+               create_time as createTime,
+               update_time as updateTime,
+               question_category_name as questionCategoryName
+        FROM question a,question_category b
+        where a.question_category=b.question_category_id
+        and a.question_type_id=#{questiontype}
+        and a.question_category=#{category}
+        ORDER BY RAND() LIMIT 1
+    </select>
 </mapper>

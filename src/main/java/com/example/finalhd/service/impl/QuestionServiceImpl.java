@@ -1,6 +1,6 @@
 package com.example.finalhd.service.impl;
 
-import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import com.example.finalhd.entity.Question;
 import com.example.finalhd.mapper.QuestionMapper;
 import com.example.finalhd.service.QuestionService;
@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +37,11 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     @Override
     public int deletequestionoption(String questionoptionid) {
         return questionMapper.deletequestionoption(questionoptionid);
+    }
+
+    @Override
+    public JSONObject randomquestion(Integer category,Integer questiontype) {
+        return  questionMapper.randomquestion(category,questiontype);
     }
 
 

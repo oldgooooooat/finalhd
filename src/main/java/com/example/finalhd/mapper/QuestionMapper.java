@@ -1,8 +1,9 @@
 package com.example.finalhd.mapper;
 
-import cn.hutool.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import com.example.finalhd.entity.Question;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -19,4 +20,5 @@ public interface QuestionMapper extends BaseMapper<Question> {
   int deletequestion(String questionid);
   int deletequestionoption(String questionoptionid);
   List<JSONObject> selectallquestion();
+  JSONObject randomquestion(Integer category,Integer questiontype);
 }
