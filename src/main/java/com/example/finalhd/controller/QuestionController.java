@@ -78,6 +78,7 @@ QuestionCategoryServiceImpl questionCategoryServiceimpl;
                 .set("question_category",questiondetail.get("questionCategoryid"))
                 .set("question_level_id",questiondetail.get("questionLevelId"))
                 .set("question_description",questiondetail.get("questionDescription"))
+                .set("question_photos",questiondetail.get("questionPhotos"))
                 .set("update_time",LocalDateTime.now());
         questionServiceimpl.update(null,updateWrapper);
         List<Map<String,Object>> questionoption= (List<Map<String, Object>>) params.get("questionoptiondetail1");
@@ -163,7 +164,7 @@ QuestionCategoryServiceImpl questionCategoryServiceimpl;
         question.setQuestionCategory((Integer) params.get("category"));
         Integer userid= (Integer) params.get("userid");
         question.setQuestionCreatorId(Integer.toString(userid));
-
+        question.setQuestionPhotos((String) params.get("photos"));
         question.setQuestionDescription((String) params.get("questioncontext"));
         question.setQuestionScore(Integer.valueOf((String) params.get("score")));
         question.setQuestionTypeId(Integer.valueOf((String) params.get("option")));
@@ -220,6 +221,7 @@ QuestionCategoryServiceImpl questionCategoryServiceimpl;
             }
         }
         else if(question.getQuestionTypeId()==3){
+            System.out.println(params);
             QuestionOption questionOption =new QuestionOption();
             String questionansweroption=IdUtil.simpleUUID();
             questionoption=questionansweroption;
@@ -227,7 +229,16 @@ QuestionCategoryServiceImpl questionCategoryServiceimpl;
             questionOption.setQuestionOptionId(questionansweroption);
             questionOption.setQuestionOptionContent((String) params.get("answer"));
             questionOptionServiceimpl.save(questionOption);
-            question.setQuestionOptionIds(questionansweroption);
+//判断添加错误答案
+
+            QuestionOption questionOption1=new QuestionOption();
+            String questionansweroption1=IdUtil.simpleUUID();
+            questionOption1.setQuestionOptionId(questionansweroption1);
+            questionoption=questionoption+"-"+questionansweroption1;
+            questionOption1.setQuestionOptionContent((String) params.get("pdanswer"));
+            questionOptionServiceimpl.save(questionOption1);
+
+//            question.setQuestionOptionIds(questionansweroption);
         }
        question.setQuestionOptionIds(questionoption);
         question.setCreateTime(LocalDateTime.now());

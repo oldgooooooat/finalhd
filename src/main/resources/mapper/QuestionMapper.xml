@@ -3,19 +3,20 @@
 <mapper namespace="com.example.finalhd.mapper.QuestionMapper">
    <select id="selectallquestion"    resultType="com.alibaba.fastjson.JSONObject"
            >
-       SELECT question_id as questionId,
-              question_name as questionName,
-              question_creator_id as questionCreatorId,
-              question_level_id as questionLevelId,
-              question_type_id as questionTypeId,
-              question_score as questionScore,
-              question_category as questionCategoryid,
-              question_description as questionDescription,
-              question_option_ids as questionOptionIds,
-              question_answer_option_ids as questionAnswerOptionIds,
-              create_time as createTime,
-              update_time as updateTime,
-              question_category_name as questionCategoryName
+       SELECT a.question_id as questionId,
+              a.question_name as questionName,
+              a.question_creator_id as questionCreatorId,
+              a.question_level_id as questionLevelId,
+              a.question_type_id as questionTypeId,
+              a.question_score as questionScore,
+              a.question_category as questionCategoryid,
+              a.question_description as questionDescription,
+              a.question_option_ids as questionOptionIds,
+              a.question_answer_option_ids as questionAnswerOptionIds,
+              a.create_time as createTime,
+              a.update_time as updateTime,
+              b.question_category_name as questionCategoryName,
+              a.question_photos as questionPhotos
        FROM question a,question_category b
        where a.question_category=b.question_category_id
    </select>
@@ -26,19 +27,20 @@
         delete from question_option where question_option_id=#{questionoptionid}
     </delete>
     <select id="randomquestion" resultType="com.alibaba.fastjson.JSONObject" >
-        SELECT question_id as questionId,
-               question_name as questionName,
-               question_creator_id as questionCreatorId,
-               question_level_id as questionLevelId,
-               question_type_id as questionTypeId,
-               question_score as questionScore,
-               question_category as questionCategoryid,
-               question_description as questionDescription,
-               question_option_ids as questionOptionIds,
-               question_answer_option_ids as questionAnswerOptionIds,
-               create_time as createTime,
-               update_time as updateTime,
-               question_category_name as questionCategoryName
+        SELECT a.question_id as questionId,
+               a.question_name as questionName,
+               a.question_creator_id as questionCreatorId,
+               a.question_level_id as questionLevelId,
+               a.question_type_id as questionTypeId,
+               a.question_score as questionScore,
+               a.question_category as questionCategoryid,
+               a.question_description as questionDescription,
+               a.question_option_ids as questionOptionIds,
+               a.question_answer_option_ids as questionAnswerOptionIds,
+               a.create_time as createTime,
+               a.update_time as updateTime,
+               b.question_category_name as questionCategoryName,
+               a.question_photos as questionPhotos
         FROM question a,question_category b
         where a.question_category=b.question_category_id
         and a.question_type_id=#{questiontype}
