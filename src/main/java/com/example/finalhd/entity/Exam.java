@@ -2,6 +2,8 @@ package com.example.finalhd.entity;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,6 +26,7 @@ public class Exam implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "exam_id")
     private String examId;
 
     private String examName;
