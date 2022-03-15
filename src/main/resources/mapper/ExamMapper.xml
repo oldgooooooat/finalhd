@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.finalhd.mapper.ExamMapper">
-
+    <select id="selectallexam"    resultType="com.alibaba.fastjson.JSONObject"
+    >
+            SELECT
+            a.exam_id as examId,
+            a.exam_name as examName,
+            a.exam_description as examDescription,
+            a.question_creator_id as questionCreatorId,
+            a.exam_score as examScore,
+            a.exam_time_limit as examTimeLimit,
+            a.exam_start_date as examStartDate,
+            a.exam_end_date as examEndDate,
+            b.nickname as createname
+            from exam a,t_user b
+            where b.id=a.question_creator_id
+        <if test='#{usertype}!="1"'>
+            and a.question_creator_id=#{userid}
+        </if>
+    </select>
 </mapper>

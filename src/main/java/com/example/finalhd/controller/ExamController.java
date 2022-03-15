@@ -2,6 +2,7 @@ package com.example.finalhd.controller;
 
 
 import cn.hutool.core.util.IdUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.finalhd.entity.Exam;
@@ -116,11 +117,18 @@ public class ExamController {
         }
         return RespBean.ok("1",questionList);
     }
-    @GetMapping("/getallexam")
-    public RespBean getexam()
+    @PostMapping("/getallexam")
+    public RespBean getexam(@RequestBody Map<String,Object> params)
     {
-      List<Exam> examList=examServiceimpl.list();
-        return RespBean.ok("查询成功",examList);
+        Integer usertype= (Integer) params.get("usertype");
+        Integer userid= (Integer) params.get("userid");
+        System.out.println(params);
+
+        List<JSONObject> examList = examServiceimpl.selectallexam(usertype,userid);
+            return RespBean.ok("查询成功", examList);
+
+
+
     }
     @PostMapping("/addexam")
     public RespBean addexam(@RequestBody Map<String,Object> params) {
@@ -136,6 +144,8 @@ public class ExamController {
         exam.setExamId(examid);
         exam.setExamName((String) params.get("name"));
         exam.setExamDescription((String) params.get("context"));
+        Integer userid= (Integer) params.get("userid");
+        exam.setQuestionCreatorId(Integer.toString(userid));
 
         exam.setExamStartDate(starttime);
         exam.setExamEndDate(endtime);

@@ -134,11 +134,15 @@ QuestionCategoryServiceImpl questionCategoryServiceimpl;
             }
             return RespBean.ok("删除成功");
          }
-    @GetMapping("/selectallquestion")
-    public RespBean selectallquestion()
+    @PostMapping("/selectallquestion")
+    public RespBean selectallquestion(@RequestBody Map<String,Object> params)
 
     {
-        List<JSONObject> allquestion=questionServiceimpl.selectallquestion();
+        Integer usertype= (Integer) params.get("usertype");
+        Integer userid= (Integer) params.get("userid");
+
+
+        List<JSONObject> allquestion=questionServiceimpl.selectallquestion(usertype,userid);
         if (allquestion!=null) {
             return RespBean.ok("操作成功", allquestion);
         }

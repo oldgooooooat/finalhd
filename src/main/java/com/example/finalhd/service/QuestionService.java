@@ -16,7 +16,7 @@ import java.util.List;
  * @since 2022-02-16
  */
 public interface QuestionService extends IService<Question> {
- List<JSONObject> selectallquestion();
+ List<JSONObject> selectallquestion(Integer usertype,Integer userid);
  int deletequestion(String questionid);
  int deletequestionoption(String questionoptionid);
  JSONObject randomquestion(Integer category,Integer questiontype);

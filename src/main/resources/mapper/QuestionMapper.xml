@@ -16,9 +16,14 @@
               a.create_time as createTime,
               a.update_time as updateTime,
               b.question_category_name as questionCategoryName,
-              a.question_photos as questionPhotos
-       FROM question a,question_category b
+              a.question_photos as questionPhotos,
+              c.nickname as createname
+       FROM question a,question_category b,t_user c
        where a.question_category=b.question_category_id
+           and c.id=a.question_creator_id
+       <if test='#{usertype}!="1"'>
+           and a.question_creator_id=#{userid}
+       </if>
    </select>
    <delete id="deletequestion" parameterType="com.example.finalhd.entity.Question">
      delete from question where question_id=#{questionid}
