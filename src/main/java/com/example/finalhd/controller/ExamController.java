@@ -41,6 +41,18 @@ public class ExamController {
     QuestionServiceImpl questionServiceimpl;
     @Resource
     ExamQuestionServiceImpl examQuestionServiceimpl;
+    @PostMapping("/closeexam")
+    public RespBean closeexam(@RequestBody Map<String,Object> params){
+     String examid= (String) params.get("examId");
+     Exam exam=examServiceimpl.getById(examid);
+     exam.setExamSwitch(3);
+     UpdateWrapper<Exam> updateWrapper =new UpdateWrapper();
+     updateWrapper.eq("exam_id",examid)
+             .set("exam_switch",3);
+        examServiceimpl.update(updateWrapper);
+
+        return  RespBean.ok("1");
+    }
     @PostMapping("/deleteexam")
 
     public  RespBean deleteexam(@RequestBody List<Map<String,Object>> params){
@@ -122,9 +134,38 @@ public class ExamController {
     {
         Integer usertype= (Integer) params.get("usertype");
         Integer userid= (Integer) params.get("userid");
-        System.out.println(params);
 
         List<JSONObject> examList = examServiceimpl.selectallexam(usertype,userid);
+        for(int i=0;i<examList.size();i++)
+        {
+           LocalDateTime examStarttime = ((Timestamp) examList.get(i).get("examStartDate")).toLocalDateTime();
+           LocalDateTime examEndtime = ((Timestamp) examList.get(i).get("examEndDate")).toLocalDateTime();
+
+            System.out.println(examEndtime);
+           LocalDateTime now=LocalDateTime.now();
+           System.out.println(examEndtime.compareTo(now));
+           Integer examSwitch= (Integer) examList.get(i).get("examSwitch");
+         if(  examStarttime.compareTo(now)<0 && examSwitch==1)
+         {
+           examList.get(i).put("examSwitch",2);
+          UpdateWrapper<Exam> updateWrapper = new UpdateWrapper<>();
+          updateWrapper.eq("exam_id",examList.get(i).get("examId"))
+                  .set("exam_switch",2);
+            examServiceimpl.update(updateWrapper);
+         }
+             examSwitch= (Integer) examList.get(i).get("examSwitch");
+         if(examEndtime.compareTo(now)<0 && examSwitch==2)
+            {
+                examList.get(i).put("examSwitch",3);
+                UpdateWrapper<Exam> updateWrapper = new UpdateWrapper<>();
+                updateWrapper.eq("exam_id",examList.get(i).get("examId"))
+                        .set("exam_switch",3);
+                examServiceimpl.update(updateWrapper);
+
+            }
+
+
+        }
             return RespBean.ok("查询成功", examList);
 
 
@@ -132,7 +173,6 @@ public class ExamController {
     }
     @PostMapping("/addexam")
     public RespBean addexam(@RequestBody Map<String,Object> params) {
-        System.out.println(params);
         List<Long> examtime= (List<Long>) params.get("examtime");
         Instant starttimestamp = Instant.ofEpochMilli(examtime.get(0));
         Instant endtimestamp = Instant.ofEpochMilli(examtime.get(1));
@@ -165,7 +205,7 @@ public class ExamController {
         exam.setExamScore(score);
         exam.setCreateTime(LocalDateTime.now());
         examServiceimpl.save(exam);
-System.out.println(params);
+
         return RespBean.ok("添加成功");
     }
 

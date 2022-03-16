@@ -12,6 +12,7 @@
             a.exam_time_limit as examTimeLimit,
             a.exam_start_date as examStartDate,
             a.exam_end_date as examEndDate,
+            a.exam_switch as examSwitch,
             b.nickname as createname
             from exam a,t_user b
             where b.id=a.question_creator_id

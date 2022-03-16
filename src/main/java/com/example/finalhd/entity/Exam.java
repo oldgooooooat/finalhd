@@ -35,6 +35,7 @@ public class Exam implements Serializable {
 
     private Integer examScore;
 
+    private Integer examSwitch;
     private Integer examTimeLimit;
     @ApiModelProperty(value = "题目创建者的用户id")
     private String questionCreatorId;
@@ -42,6 +43,7 @@ public class Exam implements Serializable {
     private LocalDateTime examStartDate;
 
     private LocalDateTime examEndDate;
+
 
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
