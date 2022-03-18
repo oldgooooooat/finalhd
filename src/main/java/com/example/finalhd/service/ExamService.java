@@ -16,5 +16,5 @@ import java.util.List;
  */
 public interface ExamService extends IService<Exam> {
     List<JSONObject> selectallexam(Integer usertype, Integer userid);
-
+    List<JSONObject> selectexamanswer();
 }
