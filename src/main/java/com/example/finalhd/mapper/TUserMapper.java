@@ -17,7 +17,8 @@ TUser loadUserByUsername(String username);
 void regist(@Param("username") String username,
             @Param("password") String password,
             @Param("email") String email,
-            @Param("nickname") String nickname
+            @Param("nickname") String nickname,
+            @Param("userid") String userid
             );
 
 }

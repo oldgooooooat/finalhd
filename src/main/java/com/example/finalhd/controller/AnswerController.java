@@ -1,29 +1,22 @@
 package com.example.finalhd.controller;
 
 
+import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.example.finalhd.entity.Exam;
-import com.example.finalhd.entity.ExamQuestion;
-import com.example.finalhd.entity.Question;
-import com.example.finalhd.entity.QuestionOption;
-import com.example.finalhd.service.impl.ExamQuestionServiceImpl;
-import com.example.finalhd.service.impl.ExamServiceImpl;
-import com.example.finalhd.service.impl.QuestionOptionServiceImpl;
-import com.example.finalhd.service.impl.QuestionServiceImpl;
+import com.example.finalhd.entity.*;
+import com.example.finalhd.service.impl.*;
 import com.example.finalhd.util.RespBean;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/answer")
@@ -36,6 +29,94 @@ public class AnswerController {
     ExamServiceImpl examServiceimpl;
     @Resource
     ExamQuestionServiceImpl examQuestionServiceimpl;
+    @Resource
+    ExamRecordServiceImpl examRecordServiceimpl;
+    @PostMapping("/submitexam")
+    public RespBean submitexam( @RequestBody Map<String,Object> params)
+    {
+
+        List<Map<String,Object>> questions = (List<Map<String, Object>>) params.get("questions");
+        Map<String,Object> examlist= (Map<String, Object>) params.get("examlist");
+        Map<String,Object> userdetail= (Map<String, Object>) params.get("userdetail");
+      ExamRecord examRecord= new ExamRecord();
+      examRecord.setRecordId(IdUtil.simpleUUID());
+      examRecord.setExamId((String) examlist.get("examId"));
+      examRecord.setCreateTime(LocalDateTime.now());
+
+        examRecord.setUserId((String) userdetail.get("userid"));
+
+
+       float score=0;
+       for (int i=0;i<questions.size();i++)
+       {
+
+           Map<String,Object> questionmap = (Map<String, Object>) questions.get(i).get("question");
+           String questionid= (String) questionmap.get("questionId");
+           Question question=questionServiceimpl.getById(questionid);
+
+           if(question.getQuestionTypeId()==2) //批改多选问题的逻辑
+           {
+               List<String> answer= (List<String>) questions.get(i).get("answer");
+               String rightanswer=question.getQuestionAnswerOptionIds();
+               String[] retval= rightanswer.split("-");
+               int k=0;
+               if (answer.size()>retval.length)
+               {
+
+                System.out.println("全错"); //选中答案数比正确答案数量多，有错误答案直接全错
+               }
+               else{
+                for(int j=0;j<answer.size();j++)
+                {
+                    for (int l=0;l<retval.length;l++)//判断对的答案数量
+                    {
+                        if(retval[l].equals(answer.get(j)))
+                        {
+                            k++;
+                            break;
+                        }
+                    }
+                }
+
+                if(k==0)
+                {
+                    System.out.println("全错");
+                }
+                if (k<retval.length&&k!=0)
+                {
+                    score=score+((float)(question.getQuestionScore())/2);
+                    System.out.println("对一半");//少选正确答案
+                }
+                if(k==retval.length)
+                {
+                    score=score+question.getQuestionScore();
+                    System.out.println("全对");//答案全部正确
+                }
+               }
+           }
+           else      //批改非多选问题逻辑
+           {
+               String answer= (String) questions.get(i).get("answer");
+               String retval=question.getQuestionAnswerOptionIds();
+               if(retval.equals(answer))
+               {
+                   score=score+question.getQuestionScore();
+                   System.out.println("正确");
+               }
+               else
+               {
+                   System.out.println("错误");
+               }
+           }
+
+       }
+       System.out.println(score);
+      examRecord.setAnswerScore(score);
+      examRecordServiceimpl.save(examRecord);
+
+//        System.out.println(params);
+        return RespBean.ok("111");
+    }
     @PostMapping("/selectexamquestion")
     public RespBean selectexamquestion(@RequestBody Map<String,Object> params){
 

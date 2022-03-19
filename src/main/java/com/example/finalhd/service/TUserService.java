@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 
 public interface TUserService extends IService<TUser> {
-    public boolean register(String username, String password,String email,String nickname);
+    public boolean register(String username, String password,String email,String nickname,String userid);
 
 
 }

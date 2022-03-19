@@ -1,5 +1,6 @@
 package com.example.finalhd.controller;
 
+import cn.hutool.core.util.IdUtil;
 import com.example.finalhd.entity.TUser;
 import com.example.finalhd.service.TUserService;
 import com.example.finalhd.service.impl.TUserServiceImpl;
@@ -29,7 +30,8 @@ public class LoginController {
         String password=params.get("password");
         String email=params.get("email");
         String nickname=params.get("nickname");
-     boolean flag=tUserService.register(username,password,email,nickname);
+        String userid= IdUtil.simpleUUID();
+     boolean flag=tUserService.register(username,password,email,nickname,userid);
     if (flag)
     {
         return RespBean.ok("注册成功");

@@ -23,7 +23,7 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
     @Resource
     ExamMapper examMapper;
     @Override
-    public List<JSONObject> selectallexam(Integer usertype, Integer userid) {
+    public List<JSONObject> selectallexam(Integer usertype, String userid) {
         return examMapper.selectallexam(usertype,userid);
     }
 

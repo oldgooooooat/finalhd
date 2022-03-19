@@ -15,6 +15,6 @@ import java.util.List;
  * @since 2022-03-07
  */
 public interface ExamMapper extends BaseMapper<Exam> {
-    List<JSONObject> selectallexam(Integer usertype, Integer userid);
+    List<JSONObject> selectallexam(Integer usertype, String userid);
     List<JSONObject> selectexamanswer();
 }

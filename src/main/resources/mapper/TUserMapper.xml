@@ -7,7 +7,9 @@
         <result column="nickname" property="nickname"  />
         <result column="password" property="password"  />
         <result column="type" property="type"  />
-        <result column="username" property="username"  />
+        <result column="username" property="username"
+
+        />
     </resultMap>
 
     <select id="loadUserByUsername" resultMap="BaseResultMap">
@@ -15,6 +17,6 @@
 </select>
     <insert id="regist">
 
-        insert into t_user(username,password,email,nickname,type) value (#{username},#{password},#{email},#{nickname},1)
+        insert into t_user(id,username,password,email,nickname,type) value (#{userid},#{username},#{password},#{email},#{nickname},1)
     </insert>
 </mapper>

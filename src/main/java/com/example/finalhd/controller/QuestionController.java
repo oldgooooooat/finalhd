@@ -139,7 +139,7 @@ QuestionCategoryServiceImpl questionCategoryServiceimpl;
 
     {
         Integer usertype= (Integer) params.get("usertype");
-        Integer userid= (Integer) params.get("userid");
+        String userid= (String) params.get("userid");
 
 
         List<JSONObject> allquestion=questionServiceimpl.selectallquestion(usertype,userid);
@@ -166,8 +166,7 @@ QuestionCategoryServiceImpl questionCategoryServiceimpl;
         question.setQuestionId(IdUtil.simpleUUID());
         question.setQuestionName((String) params.get("questionname"));
         question.setQuestionCategory((Integer) params.get("category"));
-        Integer userid= (Integer) params.get("userid");
-        question.setQuestionCreatorId(Integer.toString(userid));
+        question.setQuestionCreatorId((String) params.get("userid"));
         question.setQuestionPhotos((String) params.get("photos"));
         question.setQuestionDescription((String) params.get("questioncontext"));
         question.setQuestionScore(Integer.valueOf((String) params.get("score")));

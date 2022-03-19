@@ -29,7 +29,7 @@ public class TUser implements Serializable, UserDetails {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "用户id")
-    private Long id;
+    private String id;
 
     @ApiModelProperty(value = "邮箱")
     private String email;

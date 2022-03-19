@@ -133,7 +133,7 @@ public class ExamController {
     public RespBean getexam(@RequestBody Map<String,Object> params)
     {
         Integer usertype= (Integer) params.get("usertype");
-        Integer userid= (Integer) params.get("userid");
+        String userid= (String) params.get("userid");
 
         List<JSONObject> examList = examServiceimpl.selectallexam(usertype,userid);
         for(int i=0;i<examList.size();i++)
@@ -184,8 +184,7 @@ public class ExamController {
         exam.setExamId(examid);
         exam.setExamName((String) params.get("name"));
         exam.setExamDescription((String) params.get("context"));
-        Integer userid= (Integer) params.get("userid");
-        exam.setQuestionCreatorId(Integer.toString(userid));
+        exam.setQuestionCreatorId((String) params.get("userid"));
 
         exam.setExamStartDate(starttime);
         exam.setExamEndDate(endtime);

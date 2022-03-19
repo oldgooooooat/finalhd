@@ -19,6 +19,6 @@ public interface QuestionMapper extends BaseMapper<Question> {
 //  List<Question> selectallquestion();
   int deletequestion(String questionid);
   int deletequestionoption(String questionoptionid);
-  List<JSONObject> selectallquestion(Integer usertype,Integer userid);
+  List<JSONObject> selectallquestion(Integer usertype,String userid);
   JSONObject randomquestion(Integer category,Integer questiontype);
 }
