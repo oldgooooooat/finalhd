@@ -14,7 +14,7 @@
 
     <select id="loadUserByUsername" resultMap="BaseResultMap">
  select * from t_user where username=#{username}
-</select>
+    </select>
     <insert id="regist">
 
         insert into t_user(id,username,password,email,nickname,type) value (#{userid},#{username},#{password},#{email},#{nickname},1)
