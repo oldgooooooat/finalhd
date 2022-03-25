@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.finalhd.mapper.ExamRecordMapper">
+<select id="getrecord"  resultType="com.alibaba.fastjson.JSONObject">
+    SELECT
+    a.record_id as RecordId,
+    a.exam_id as ExamId,
+    a.answer_score as AnswerScore,
+    a.create_time as CreateTime,
+    a.user_id  as UserId,
+    b.exam_name as ExamName,
+    b.exam_score as ExamMaxScore
+    from exam_record a, exam b
+    where a.user_id=5 and a.exam_id=b.exam_id
 
+
+
+</select>
 </mapper>

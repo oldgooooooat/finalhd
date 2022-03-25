@@ -65,7 +65,16 @@ public class AnswerController {
 
            if(question.getQuestionTypeId()==2) //批改多选问题的逻辑
            {
+
                List<String> answer= (List<String>) questions.get(i).get("answer");
+               if (answer.size()==0){
+                 System.out.println("全错");
+                   examQuestionRecord.setQuestionOptionId(null);
+                   examQuestionRecord.setCorrect(3);
+                   examQuestionRecordServiceimpl.save(examQuestionRecord);
+                   continue;
+               }
+
                String useranswer=answer.get(0);
                for(int a=1;a<answer.size();a++)
                {

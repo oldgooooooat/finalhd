@@ -1,7 +1,10 @@
 package com.example.finalhd.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.finalhd.entity.ExamRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-03-19
  */
 public interface ExamRecordService extends IService<ExamRecord> {
-
+    List<JSONObject> getrecord(String userid);
 }
