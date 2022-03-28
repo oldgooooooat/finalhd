@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -79,6 +76,7 @@ public class ExamRecordController {
            queryWrapper1.eq("question_id",questionids.get(i).getQuestionId())
                    .eq("record_id",recordid);
            Map<String,Object> answeroption= examQuestionRecordServiceimpl.getMap(queryWrapper1);//查询该题的回答记录
+          Integer correct= (Integer) answeroption.get("correct");
           String answeroptions= (String) answeroption.get("question_option_id");
            List<QuestionOption> useransweroption =new ArrayList();
           if(answeroptions!=null) {
@@ -88,8 +86,9 @@ public class ExamRecordController {
           }
 
 
-
+           Collections.shuffle(questionansweroptions);
            HashMap questions = new HashMap();
+           questions.put("correct",correct);
            questions.put("answer",useransweroption);
            questions.put("questionrightoptions",questionrightansweroptions);
 //           questions.put("answer",answeroption);

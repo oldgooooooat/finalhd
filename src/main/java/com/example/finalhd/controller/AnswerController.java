@@ -67,6 +67,9 @@ public class AnswerController {
            {
 
                List<String> answer= (List<String>) questions.get(i).get("answer");
+               System.out.println("!11");
+               System.out.println(answer);
+               System.out.println("!11");
                if (answer.size()==0){
                  System.out.println("全错");
                    examQuestionRecord.setQuestionOptionId(null);
@@ -78,7 +81,7 @@ public class AnswerController {
                String useranswer=answer.get(0);
                for(int a=1;a<answer.size();a++)
                {
-                   useranswer=useranswer+'-'+answer.get(i);
+                   useranswer=useranswer+'-'+answer.get(a);
                }
                examQuestionRecord.setQuestionOptionId(useranswer);
                String rightanswer=question.getQuestionAnswerOptionIds();
@@ -171,6 +174,7 @@ public class AnswerController {
             for (String retval : questionansweroption.split("-")) {
                 questionansweroptions.add(questionOptionServiceimpl.getById(retval));
             }
+            Collections.shuffle(questionansweroptions);
             HashMap questions = new HashMap();
             questions.put("question",question);
             questions.put("questionoptions",questionansweroptions);
@@ -244,7 +248,9 @@ public class AnswerController {
               for (String retval : questionansweroption.split("-")) {
                   questionanswerOption.add(questionOptionServiceimpl.getById(retval));
               }
+
               List<Object> returnlist = new ArrayList<>();
+              Collections.shuffle(questionOptions);
               returnlist.add(randomquestion);
               returnlist.add(questionOptions);
               returnlist.add(questionanswerOption);
