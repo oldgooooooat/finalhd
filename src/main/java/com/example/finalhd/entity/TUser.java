@@ -42,9 +42,12 @@ public class TUser implements Serializable, UserDetails {
 
     @ApiModelProperty(value = "角色")
     private Integer type;
+    @ApiModelProperty(value = "班级名称")
+    private String classname;
 
     @ApiModelProperty(value = "用户名")
     private String username;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

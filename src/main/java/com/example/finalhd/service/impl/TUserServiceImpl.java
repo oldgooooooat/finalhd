@@ -28,12 +28,12 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Override
-    public boolean register(String username, String password,String email,String nickname,String userid) {
+    public boolean register(String username, String password,String email,String nickname,String userid,String classname) {
 
         TUser tUser = tUserMapper.loadUserByUsername(username);
         if (tUser == null) {
             String password1 = passwordEncoder.encode(password);
-         tUserMapper.regist(username, password1,email,nickname,userid);
+         tUserMapper.regist(username, password1,email,nickname,userid,classname);
          return true;
         }
         else

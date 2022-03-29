@@ -5,12 +5,8 @@ import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.example.finalhd.entity.Exam;
-import com.example.finalhd.entity.ExamQuestion;
-import com.example.finalhd.entity.Question;
-import com.example.finalhd.service.impl.ExamQuestionServiceImpl;
-import com.example.finalhd.service.impl.ExamServiceImpl;
-import com.example.finalhd.service.impl.QuestionServiceImpl;
+import com.example.finalhd.entity.*;
+import com.example.finalhd.service.impl.*;
 import com.example.finalhd.util.RespBean;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +37,14 @@ public class ExamController {
     QuestionServiceImpl questionServiceimpl;
     @Resource
     ExamQuestionServiceImpl examQuestionServiceimpl;
+    @Resource
+    ExamRecordServiceImpl examRecordimpl;
+    @Resource
+    ExamQuestionRecordServiceImpl examQuestionRecordServiceimpl;
+    @Resource
+    ExamUserServiceImpl examUserServiceimpl;
+    @Resource
+    TUserServiceImpl tUserServiceimpl;
     @PostMapping("/closeexam")
     public RespBean closeexam(@RequestBody Map<String,Object> params){
      String examid= (String) params.get("examId");
@@ -62,6 +66,10 @@ public class ExamController {
              System.out.println(examdetail);
             QueryWrapper queryWrapper=new QueryWrapper();
             queryWrapper.eq("exam_id",examdetail.get("examId"));
+            List<ExamRecord> examRecords=examRecordimpl.list(queryWrapper);//查询考试记录删除
+            examUserServiceimpl.remove(queryWrapper);
+            examRecordimpl.remove(queryWrapper);
+            examQuestionRecordServiceimpl.remove(queryWrapper);
             List<ExamQuestion>examQuestionList=examQuestionServiceimpl.list(queryWrapper);//查询之前考试中的问题全部删除
             for(int j=0;j<examQuestionList.size();j++)
             {
@@ -83,9 +91,19 @@ public class ExamController {
         Instant endtimestamp = Instant.ofEpochMilli(examtime.get(1));
         LocalDateTime starttime= LocalDateTime.ofInstant(starttimestamp, ZoneId.systemDefault());
         LocalDateTime endtime= LocalDateTime.ofInstant(endtimestamp, ZoneId.systemDefault());
+
+        List<String> userlist= (List<String>) params.get("userlist");
+
         int score=0;
      QueryWrapper queryWrapper=new QueryWrapper();
      queryWrapper.eq("exam_id",examdetail.get("examId"));
+     examUserServiceimpl.remove(queryWrapper);
+        for (int j=0;j<userlist.size();j++){
+            ExamUser examUser=new ExamUser();
+            examUser.setExamId((String) examdetail.get("examId"));
+            examUser.setUserId(userlist.get(j));
+            examUserServiceimpl.save(examUser);
+        }
      List<ExamQuestion>examQuestionList=examQuestionServiceimpl.list(queryWrapper);//查询之前考试中的问题全部删除
        for(int i=0;i<examQuestionList.size();i++)
        {
@@ -114,6 +132,21 @@ public class ExamController {
         examServiceimpl.update(updateWrapper);
         return RespBean.ok("1");
 
+    }
+    @PostMapping("/getexamuser")
+    public RespBean getexamuser(@RequestBody Map<String,Object> params)
+    {
+        System.out.println(params);
+        QueryWrapper<ExamUser> queryWrapper =new QueryWrapper<>();
+        queryWrapper.eq("exam_id",params.get("examId"));
+        List<ExamUser> examUserList =examUserServiceimpl.list(queryWrapper);
+        List<TUser> userList=new ArrayList<>();
+        for (int i=0;i<examUserList.size();i++)
+        {
+            TUser tUser=tUserServiceimpl.getById(examUserList.get(i).getUserId());
+            userList.add(tUser);
+        }
+        return RespBean.ok("1",userList);
     }
     @PostMapping("/getexamquestion")
     public RespBean getexamquestion(@RequestBody Map<String,Object> params){
@@ -189,7 +222,16 @@ public class ExamController {
         exam.setExamStartDate(starttime);
         exam.setExamEndDate(endtime);
         exam.setExamTimeLimit(Integer.valueOf((String) params.get("time")));
+        List<String> userlist= (List<String>) params.get("userlist");
+
+        for (int j=0;j<userlist.size();j++){
+            ExamUser examUser=new ExamUser();
+            examUser.setExamId(examid);
+            examUser.setUserId(userlist.get(j));
+         examUserServiceimpl.save(examUser);
+        }
         List<String> answerlist= (List<String>) params.get("answer");
+
         int score=0;
         for (int i=0;i<answerlist.size();i++)
         {

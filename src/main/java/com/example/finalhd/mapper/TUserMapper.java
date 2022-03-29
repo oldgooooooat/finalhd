@@ -18,7 +18,8 @@ void regist(@Param("username") String username,
             @Param("password") String password,
             @Param("email") String email,
             @Param("nickname") String nickname,
-            @Param("userid") String userid
+            @Param("userid") String userid,
+            @Param("classname") String classname
             );
 
 }

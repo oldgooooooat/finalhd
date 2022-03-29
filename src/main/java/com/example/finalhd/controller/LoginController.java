@@ -30,8 +30,10 @@ public class LoginController {
         String password=params.get("password");
         String email=params.get("email");
         String nickname=params.get("nickname");
+        String classname=params.get("classname");
+
         String userid= IdUtil.simpleUUID();
-     boolean flag=tUserService.register(username,password,email,nickname,userid);
+     boolean flag=tUserService.register(username,password,email,nickname,userid,classname);
     if (flag)
     {
         return RespBean.ok("注册成功");
