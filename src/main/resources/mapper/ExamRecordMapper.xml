@@ -9,9 +9,11 @@
     a.create_time as CreateTime,
     a.user_id  as UserId,
     b.exam_name as ExamName,
-    b.exam_score as ExamMaxScore
+    b.exam_score as ExamMaxScore,
+    b.exam_switch as Examswitch,
+    b.exam_type as Examtype
     from exam_record a, exam b
-    where a.user_id=5 and a.exam_id=b.exam_id
+    where a.user_id=#{userid} and a.exam_id=b.exam_id
 
 
 

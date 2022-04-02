@@ -35,6 +35,10 @@ public class TUserController {
         queryWrapper.eq("type",2);
 
         List<TUser>  userList=tUserServiceimpl.list(queryWrapper);
+        for(int i=0;i<userList.size();i++)
+        {
+            userList.get(i).setPassword(null);
+        }
         return RespBean.ok("ok",userList);
     }
 

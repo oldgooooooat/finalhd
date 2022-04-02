@@ -20,4 +20,5 @@ public interface QuestionService extends IService<Question> {
  int deletequestion(String questionid);
  int deletequestionoption(String questionoptionid);
  JSONObject randomquestion(Integer category,Integer questiontype);
+ List<Question> getrandomquestions(int category,int number,int level);
 }

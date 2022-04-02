@@ -192,7 +192,8 @@ public class AnswerController {
 
     @PostMapping("/selectexamanswer")
     public RespBean selectexamanswer(@RequestBody Map<String,Object> params){
-        List<JSONObject> examList = examServiceimpl.selectexamanswer();
+
+        List<JSONObject> examList = examServiceimpl.selectexamanswer((String) params.get("userid"));
 
         for(int i=0;i<examList.size();i++)
         {

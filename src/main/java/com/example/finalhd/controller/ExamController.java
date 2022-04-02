@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * <p>
@@ -45,6 +46,122 @@ public class ExamController {
     ExamUserServiceImpl examUserServiceimpl;
     @Resource
     TUserServiceImpl tUserServiceimpl;
+
+
+    @PostMapping("/addrandomexam")
+    public RespBean addrandomexam(@RequestBody Map<String,Object> params)
+    {
+         Exam exam =new Exam();
+         String examid= IdUtil.simpleUUID();
+         exam.setExamId(examid);
+         exam.setExamName((String) params.get("examname"));
+         exam.setExamDescription((String) params.get("context"));
+         exam.setQuestionCreatorId((String) params.get("userid"));
+         Integer difficulty=Integer.valueOf((String) params.get("difficulty"));
+
+//        Integer difficulty=1;
+//         System.out.println(difficulty);
+         exam.setExamTimeLimit(Integer.valueOf((String) params.get("examtime")));
+//        exam.setExamTimeLimit(10);
+//        System.out.println((Integer) params.get("examtime"));
+      exam.setExamStartDate(LocalDateTime.now());
+      exam.setExamEndDate(LocalDateTime.now().plusDays(999));
+      exam.setCreateTime(LocalDateTime.now());
+      exam.setUpdateTime(LocalDateTime.now());
+      exam.setExamType(1);
+
+
+//    Integer categoryid=1;
+//    int questions=5;
+
+      int categoryid= (int) params.get("category");
+//        System.out.println(categoryid);
+
+        int questions= Integer.valueOf((String) params.get("questions")).intValue();
+
+//        System.out.println(questions);
+         int score=0;
+         List<Question> questionList=new ArrayList<>();
+         if (difficulty==1)
+         {
+             double easy=Math.floor(questions*0.7);
+
+              List<Question> eazyquestions= questionServiceimpl.getrandomquestions(categoryid,(int)easy,1);
+
+             double normal=questions-easy;
+             List<Question> normalquestions= questionServiceimpl.getrandomquestions(categoryid,(int)normal,2);
+             questionList=eazyquestions;
+             questionList.addAll(normalquestions);
+
+             if (questionList.size()==0)
+             {
+                 List<Question> difficultquestions= questionServiceimpl.getrandomquestions(categoryid,questions,3);
+                 questionList.addAll(difficultquestions);
+             }
+
+         }
+         if (difficulty==2)
+         {
+             double normal=Math.floor(questions*0.5);
+             List<Question> normalquestions= questionServiceimpl.getrandomquestions(categoryid,(int)normal,2);
+             double easy=Math.floor((questions-normal)*0.5);
+             List<Question> eazyquestions= questionServiceimpl.getrandomquestions(categoryid,(int)easy,1);
+
+             double difficult=questions-easy-normal;
+             List<Question> difficultquestions= questionServiceimpl.getrandomquestions(categoryid,(int)difficult,3);
+             questionList=eazyquestions;
+             questionList.addAll(normalquestions);
+             questionList.addAll(difficultquestions);
+         }
+         if (difficulty==3)
+         {
+             double difficult=Math.floor(questions*0.6);
+             List<Question> difficultquestions= questionServiceimpl.getrandomquestions(categoryid,(int)difficult,3);
+
+             double normal=questions-difficult;
+             List<Question> normalquestions= questionServiceimpl.getrandomquestions(categoryid,(int)normal,2);
+            questionList=normalquestions;
+             questionList.addAll(difficultquestions);
+
+             if (questionList.size()==0)
+             {
+                 List<Question> eazyquestions= questionServiceimpl.getrandomquestions(categoryid,questions,1);
+                 questionList.addAll(eazyquestions);
+             }
+
+         }
+
+       for (int q=0;q<questionList.size();q++)
+       {
+           Question question=questionList.get(q);
+           ExamQuestion examQuestion=new ExamQuestion();
+           examQuestion.setExamId(examid);
+           examQuestion.setQuestionId(question.getQuestionId());
+           examQuestion.setId(IdUtil.simpleUUID());
+           examQuestionServiceimpl.save(examQuestion);
+           score=score+question.getQuestionScore();
+       }
+            exam.setExamScore(score);
+       exam.setExamSwitch(2);
+        ExamUser examUser=new ExamUser();
+        examUser.setExamId(examid);
+        examUser.setUserId((String) params.get("userid"));
+        examUserServiceimpl.save(examUser);
+
+        examServiceimpl.save(exam);
+        System.out.println(params);
+        return RespBean.ok("111");
+    }
+
+    @PostMapping("/getrandomexam")
+    public RespBean getrandomexan(@RequestBody Map<String,Object> params){
+        System.out.println(params);
+      String userid= (String) params.get("userid");
+      List<JSONObject> randomexamlist=examServiceimpl.getrandomexam(userid);
+        return RespBean.ok("ok",randomexamlist);
+    }
+
+
     @PostMapping("/closeexam")
     public RespBean closeexam(@RequestBody Map<String,Object> params){
      String examid= (String) params.get("examId");
@@ -57,8 +174,10 @@ public class ExamController {
 
         return  RespBean.ok("1");
     }
-    @PostMapping("/deleteexam")
 
+
+
+    @PostMapping("/deleteexam")
     public  RespBean deleteexam(@RequestBody List<Map<String,Object>> params){
         for (int i=0;i<params.size();i++)
         {
@@ -218,7 +337,7 @@ public class ExamController {
         exam.setExamName((String) params.get("name"));
         exam.setExamDescription((String) params.get("context"));
         exam.setQuestionCreatorId((String) params.get("userid"));
-
+        exam.setExamType(0);
         exam.setExamStartDate(starttime);
         exam.setExamEndDate(endtime);
         exam.setExamTimeLimit(Integer.valueOf((String) params.get("time")));

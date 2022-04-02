@@ -16,6 +16,7 @@
             b.nickname as createname
             from exam a,t_user b
             where b.id=a.question_creator_id
+              and a.exam_type=0
         <if test='#{usertype}=="2"'>
             and a.question_creator_id=#{userid}
         </if>
@@ -31,8 +32,28 @@
         a.exam_start_date as examStartDate,
         a.exam_end_date as examEndDate,
         a.exam_switch as examSwitch
-        from exam a
+        from exam a,exam_user b
         where a.exam_switch!=3
 
+        and a.exam_id=b.exam_id
+        and b.user_id=#{userid}
+
+    </select>
+    <select id="getrandomexam"    resultType="com.alibaba.fastjson.JSONObject">
+        SELECT
+        a.exam_id as examId,
+        a.exam_name as examName,
+        a.exam_description as examDescription,
+        a.question_creator_id as questionCreatorId,
+        a.exam_score as examScore,
+        a.exam_time_limit as examTimeLimit,
+        a.exam_start_date as examStartDate,
+        a.exam_end_date as examEndDate,
+        a.exam_switch as examSwitch,
+        b.nickname as createname
+        from exam a,t_user b
+        where b.id=a.question_creator_id
+        and a.exam_type=1
+        and a.question_creator_id=#{userid}
     </select>
 </mapper>

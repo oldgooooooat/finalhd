@@ -16,5 +16,7 @@ import java.util.List;
  */
 public interface ExamService extends IService<Exam> {
     List<JSONObject> selectallexam(Integer usertype, String userid);
-    List<JSONObject> selectexamanswer();
+    List<JSONObject> selectexamanswer(String userid);
+    List<JSONObject> getrandomexam(String userid);
+
 }

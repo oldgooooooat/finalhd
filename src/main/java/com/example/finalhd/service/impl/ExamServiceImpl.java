@@ -28,7 +28,12 @@ public class ExamServiceImpl extends ServiceImpl<ExamMapper, Exam> implements Ex
     }
 
     @Override
-    public List<JSONObject> selectexamanswer() {
-        return examMapper.selectexamanswer();
+    public List<JSONObject> selectexamanswer(String userid) {
+        return examMapper.selectexamanswer(userid);
+    }
+
+    @Override
+    public List<JSONObject> getrandomexam(String userid) {
+        return  examMapper.getrandomexam(userid);
     }
 }
