@@ -110,7 +110,26 @@ public class ExamRecordController {
         String ExamId= (String) params.get("ExamId");
        Exam exam =examServiceimpl.getById(ExamId);
 
-        return  RespBean.ok("1",exam);
+        return  RespBean.ok("ok",exam);
+    }
+    @PostMapping("/getexamresult")
+    public RespBean getexamresult(@RequestBody Map<String,Object> params)
+    {
+       List<JSONObject> resultlist= examRecordServiceimpl.getexamresult((String) params.get("examId"));
+      for (int i=0;i<resultlist.size();i++)
+      {
+          if(resultlist.get(i).get("record_id")==null)
+          {
+              resultlist.get(i).put("record_id",null);
+              resultlist.get(i).put("answer_score",null);
+              resultlist.get(i).put("create_time",null);
+          }
+         System.out.println(resultlist.get(i).get("record_id"));
+      }
+       System.out.println(resultlist);
+        return  RespBean.ok("ok",resultlist);
+
+
     }
 }
 

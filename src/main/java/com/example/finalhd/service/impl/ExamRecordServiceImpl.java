@@ -27,4 +27,10 @@ public class ExamRecordServiceImpl extends ServiceImpl<ExamRecordMapper, ExamRec
     public List<JSONObject> getrecord(String userid) {
         return examRecordMapper.getrecord(userid);
     }
+
+    @Override
+    public List<JSONObject> getexamresult(String examid) {
+        return examRecordMapper.getexamresult(examid);
+    }
+
 }

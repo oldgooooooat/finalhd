@@ -16,4 +16,5 @@ import java.util.List;
  */
 public interface ExamRecordService extends IService<ExamRecord> {
     List<JSONObject> getrecord(String userid);
+    List<JSONObject> getexamresult(String examid);
 }
