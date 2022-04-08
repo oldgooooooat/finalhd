@@ -37,7 +37,7 @@
 
         and a.exam_id=b.exam_id
         and b.user_id=#{userid}
-
+          and a.exam_type=0
     </select>
     <select id="getrandomexam"    resultType="com.alibaba.fastjson.JSONObject">
         SELECT

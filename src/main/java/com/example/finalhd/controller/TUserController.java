@@ -32,7 +32,7 @@ public class TUserController {
     @GetMapping("/getalluser")
     public RespBean getalluser() {
         QueryWrapper<TUser> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("type",2);
+        queryWrapper.eq("type",3);
 
         List<TUser>  userList=tUserServiceimpl.list(queryWrapper);
         for(int i=0;i<userList.size();i++)

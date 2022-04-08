@@ -17,6 +17,6 @@
     </select>
     <insert id="regist">
 
-        insert into t_user(id,username,password,email,nickname,type,classname) value (#{userid},#{username},#{password},#{email},#{nickname},1,#{classname})
+        insert into t_user(id,username,password,email,nickname,type,classname) value (#{userid},#{username},#{password},#{email},#{nickname},3,#{classname})
     </insert>
 </mapper>
