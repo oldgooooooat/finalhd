@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.Collection;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -27,7 +28,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class TUser implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
-
+    @TableId(value = "id")
     @ApiModelProperty(value = "用户id")
     private String id;
 
