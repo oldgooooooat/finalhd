@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.finalhd.mapper.QuestionCollectionMapper">
+    <select id="getallcollectionquestion"    resultType="com.alibaba.fastjson.JSONObject"
+    >
+        SELECT a.question_id as questionId,
+        a.question_name as questionName,
+        a.question_creator_id as questionCreatorId,
+        a.question_level_id as questionLevelId,
+        a.question_type_id as questionTypeId,
+        a.question_score as questionScore,
+        a.question_category as questionCategoryid,
+        a.question_description as questionDescription,
+        a.question_option_ids as questionOptionIds,
+        a.question_answer_option_ids as questionAnswerOptionIds,
+        a.create_time as createTime,
+        a.update_time as updateTime,
+        b.question_category_name as questionCategoryName,
+        a.question_photos as questionPhotos
+        FROM question a,question_category b,question_collection c
+        where a.question_category=b.question_category_id
+          and a.question_id=c.questionid
+          and c.userid=#{userid}
+    </select>
+</mapper>

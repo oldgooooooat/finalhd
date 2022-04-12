@@ -40,6 +40,8 @@ public class ExamRecordController {
     ExamQuestionRecordServiceImpl examQuestionRecordServiceimpl;
 @Resource
     ExamServiceImpl examServiceimpl;
+@Resource
+    QuestionCollectionServiceImpl questionCollectionServiceimpl;
     @PostMapping("/getrecord")
     public RespBean getrecord(@RequestBody Map<String,Object> params){
       List<JSONObject> recordlist=examRecordServiceimpl.getrecord((String) params.get("userid"));
@@ -59,6 +61,10 @@ public class ExamRecordController {
        for (int i=0;i<questionids.size();i++)
        {
            String questionid=questionids.get(i).getQuestionId();
+         QueryWrapper collection=new QueryWrapper();
+          collection.eq("questionid",questionid);
+          collection.eq("userid",userid);
+        int collectioncount=  questionCollectionServiceimpl.count(collection) ;
            Question question=questionServiceimpl.getById(questionid);
            String questionansweroption=question.getQuestionOptionIds();
            List<QuestionOption> questionansweroptions =new ArrayList();//查询问题选项
@@ -88,6 +94,7 @@ public class ExamRecordController {
 
            Collections.shuffle(questionansweroptions);
            HashMap questions = new HashMap();
+           questions.put("collectioncount",collectioncount);
            questions.put("correct",correct);
            questions.put("answer",useransweroption);
            questions.put("questionrightoptions",questionrightansweroptions);
@@ -130,6 +137,94 @@ public class ExamRecordController {
         return  RespBean.ok("ok",resultlist);
 
 
+    }
+    @PostMapping("/addcollectionquestion")
+    public RespBean addcollectionquestion(@RequestBody Map<String,Object> params)
+    {
+        QuestionCollection questionCollection=new QuestionCollection();
+
+        String questionid= (String) params.get("questionid");
+        String userid= (String) params.get("userid");
+        questionCollection.setQuestionid(questionid);
+        questionCollection.setUserid(userid);
+        questionCollectionServiceimpl.save(questionCollection);
+        System.out.println(params);
+        return  RespBean.ok("ok");
+    }
+    @PostMapping("/deletecollectionquestion")
+    public RespBean deletecollectionquestion(@RequestBody Map<String,Object> params)
+    {
+           QueryWrapper queryWrapper=new QueryWrapper();
+        String questionid= (String) params.get("questionid");
+        String userid= (String) params.get("userid");
+
+         queryWrapper.eq("questionid",questionid);
+         queryWrapper.eq("userid",userid);
+        questionCollectionServiceimpl.remove(queryWrapper);
+        System.out.println(params);
+        return  RespBean.ok("ok");
+    }
+    @PostMapping("/getallcollectionquestion")
+    public RespBean getallcollectionquestion(@RequestBody Map<String,Object> params)
+    {
+        System.out.println(params);
+        String userid= (String) params.get("userid");
+     List<JSONObject> Questionlist=questionCollectionServiceimpl.getallcollectionquestion(userid);
+//        QueryWrapper queryWrapper=new QueryWrapper();
+//        queryWrapper.eq("userid",userid);
+//        List<QuestionCollection> Collectionlist=questionCollectionServiceimpl.list(queryWrapper);
+//        List<Question> Questionlist=new ArrayList<>();
+//        for(int i=0; i<Collectionlist.size();i++)
+//        {
+//
+//          Question question=questionServiceimpl.getById(Collectionlist.get(i).getQuestionid());
+//          Questionlist.add(question);
+//        }
+
+        return RespBean.ok("111",Questionlist);
+
+    }
+    @PostMapping("/deletecollection")
+    public RespBean deletecollection(@RequestBody Map<String,Object> params)
+    {
+        String userid= (String) params.get("userid");
+         String questions= (String) params.get("questions");
+         List<JSONObject> questionlist= (List<JSONObject>) JSONObject.parse(questions);
+
+         for (int i=0;i<questionlist.size();i++)
+         {
+            QueryWrapper queryWrapper=new QueryWrapper();
+            String questionid= (String) questionlist.get(i).get("questionId");
+            queryWrapper.eq("userid",userid);
+            queryWrapper.eq("questionid",questionid);
+            questionCollectionServiceimpl.remove(queryWrapper);
+
+
+         }
+
+
+        return RespBean.ok("111");
+    }
+    @PostMapping("/getquestioncontext")
+    public RespBean getquestioncontext(@RequestBody Map<String,Object> params) {
+        System.out.println(params);
+
+            String questionpotion = (String) params.get("questionOptionIds");
+            List<QuestionOption> questionOptions = new ArrayList<>();
+            for (String retval : questionpotion.split("-")) {
+                questionOptions.add(questionOptionServiceimpl.getById(retval));
+            }
+            String questionansweroption = (String) params.get("questionAnswerOptionIds");
+            List<QuestionOption> questionanswerOption = new ArrayList<>();
+            for (String retval : questionansweroption.split("-")) {
+                questionanswerOption.add(questionOptionServiceimpl.getById(retval));
+            }
+        List<Object> returnlist = new ArrayList<>();
+        returnlist.add(params);
+        returnlist.add(questionOptions);
+        returnlist.add(questionanswerOption);
+
+        return RespBean.ok("1",returnlist);
     }
 }
 
