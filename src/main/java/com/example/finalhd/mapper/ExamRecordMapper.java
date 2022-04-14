@@ -17,4 +17,5 @@ import java.util.List;
 public interface ExamRecordMapper extends BaseMapper<ExamRecord> {
     List<JSONObject> getrecord(String userid);
     List<JSONObject> getexamresult(String examid);
+    List<JSONObject> getwrongquestion(String userid);
 }

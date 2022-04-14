@@ -33,4 +33,9 @@ public class ExamRecordServiceImpl extends ServiceImpl<ExamRecordMapper, ExamRec
         return examRecordMapper.getexamresult(examid);
     }
 
+    @Override
+    public List<JSONObject> getwrongquestion(String userid) {
+        return examRecordMapper.getwrongquestion(userid);
+    }
+
 }

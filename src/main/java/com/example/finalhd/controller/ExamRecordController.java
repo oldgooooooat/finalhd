@@ -208,6 +208,8 @@ public class ExamRecordController {
     @PostMapping("/getquestioncontext")
     public RespBean getquestioncontext(@RequestBody Map<String,Object> params) {
         System.out.println(params);
+      String  questionid= (String) params.get("questionId");
+        Question question=questionServiceimpl.getById(questionid);
 
             String questionpotion = (String) params.get("questionOptionIds");
             List<QuestionOption> questionOptions = new ArrayList<>();
@@ -220,11 +222,19 @@ public class ExamRecordController {
                 questionanswerOption.add(questionOptionServiceimpl.getById(retval));
             }
         List<Object> returnlist = new ArrayList<>();
-        returnlist.add(params);
+        returnlist.add(question);
         returnlist.add(questionOptions);
         returnlist.add(questionanswerOption);
 
         return RespBean.ok("1",returnlist);
+    }
+    @PostMapping("/getwrongquestion")
+    public RespBean getwrongquestion(@RequestBody Map<String,Object> params) {
+
+        String userid= (String) params.get("userid");
+        List<JSONObject> questionlist=examRecordServiceimpl.getwrongquestion(userid);
+        return RespBean.ok("1",questionlist);
+
     }
 }
 

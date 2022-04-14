@@ -33,4 +33,24 @@
 
 
     </select>
+    <select id="getwrongquestion"  resultType="com.alibaba.fastjson.JSONObject">
+        SELECT a.question_id as questionId,
+               a.exam_id as examId,
+               b.create_time as CreateTime,
+               c.exam_name as examName,
+               d.question_name as questionName,
+               d.question_option_ids as questionOptionIds,
+               d.question_answer_option_ids as questionAnswerOptionIds,
+               d.question_description as questionDescription,
+               d.question_level_id as questionLevelId,
+               d.question_type_id as questionTypeId,
+               e.question_category_name as questionCategoryName
+        FROM exam_question_record a,exam_record b,exam c,question d,question_category e where
+        b.user_id=#{userid}
+        and b.exam_id=a.exam_id
+        and a.correct>1
+        and b.exam_id=c.exam_id
+        and d.question_id=a.question_id
+        and d.question_category=e.question_category_id
+    </select>
 </mapper>
