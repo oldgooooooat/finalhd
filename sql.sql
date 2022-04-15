@@ -45,7 +45,7 @@ CREATE TABLE `exam` (
 
 LOCK TABLES `exam` WRITE;
 /*!40000 ALTER TABLE `exam` DISABLE KEYS */;
-INSERT INTO `exam` VALUES ('2979d0d494eb49e1b06734c263e19ec8','随机考试','随机考试','bc58cbc441d84ce7ab835e54f9d5303b',20,120,2,1,'2022-04-08 05:24:21','2025-01-01 05:24:21','2022-04-08 05:24:21','2022-04-08 05:24:21'),('485682a457e44170b039769505c58389','语文期末考试','语文期末考试','288dbb53b93a4e7d892df8d88e5bdca8',25,60,1,0,'2022-04-08 16:00:00','2022-05-30 16:00:00','2022-04-08 01:46:20','2022-04-08 01:46:20'),('9a3a1408c0f3428f8a5ead3344b79a2d','语文测试','语文测试','288dbb53b93a4e7d892df8d88e5bdca8',20,15,2,0,'2022-04-07 16:00:00','2022-05-17 16:00:00','2022-04-08 06:06:51','2022-04-08 06:06:52'),('cd52356d70fc4f998f4b5d5ab86c6b7a','语文期中考试','语文期中考试','288dbb53b93a4e7d892df8d88e5bdca8',20,60,3,0,'2022-03-31 16:00:00','2022-05-30 16:00:00','2022-04-08 01:46:55','2022-04-08 01:47:27'),('d7373acae6f24d94a148a9c75d249a42','语文期初考试','语文期初考试','288dbb53b93a4e7d892df8d88e5bdca8',25,60,2,0,'2022-03-31 16:00:00','2022-05-30 16:00:00','2022-04-08 01:47:22','2022-04-08 01:47:23'),('dfc7e6e052ba48df9e392a534117792f','语文单元测试','语文单元测试','288dbb53b93a4e7d892df8d88e5bdca8',20,120,2,0,'2022-04-06 16:00:00','2022-05-30 16:00:00','2022-04-08 02:39:38','2022-04-08 02:39:39');
+INSERT INTO `exam` VALUES ('2979d0d494eb49e1b06734c263e19ec8','随机考试','随机考试','bc58cbc441d84ce7ab835e54f9d5303b',20,120,2,1,'2022-04-08 05:24:21','2025-01-01 05:24:21','2022-04-08 05:24:21','2022-04-08 05:24:21'),('485682a457e44170b039769505c58389','语文期末考试','语文期末考试','288dbb53b93a4e7d892df8d88e5bdca8',25,60,2,0,'2022-04-08 16:00:00','2022-05-30 16:00:00','2022-04-08 01:46:20','2022-04-11 00:51:14'),('9a3a1408c0f3428f8a5ead3344b79a2d','语文测试','语文测试','288dbb53b93a4e7d892df8d88e5bdca8',20,15,2,0,'2022-04-07 16:00:00','2022-05-17 16:00:00','2022-04-08 06:06:51','2022-04-08 06:06:52'),('cd52356d70fc4f998f4b5d5ab86c6b7a','语文期中考试','语文期中考试','288dbb53b93a4e7d892df8d88e5bdca8',20,60,3,0,'2022-03-31 16:00:00','2022-05-30 16:00:00','2022-04-08 01:46:55','2022-04-08 01:47:27'),('d7373acae6f24d94a148a9c75d249a42','语文期初考试','语文期初考试','288dbb53b93a4e7d892df8d88e5bdca8',25,60,2,0,'2022-03-31 16:00:00','2022-05-30 16:00:00','2022-04-08 01:47:22','2022-04-08 01:47:23'),('dfc7e6e052ba48df9e392a534117792f','语文单元测试','语文单元测试','288dbb53b93a4e7d892df8d88e5bdca8',20,120,2,0,'2022-04-06 16:00:00','2022-05-30 16:00:00','2022-04-08 02:39:38','2022-04-08 02:39:39');
 /*!40000 ALTER TABLE `exam` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,6 +211,29 @@ INSERT INTO `question_category` VALUES (1,'天文','天文'),(2,'英文','英文
 UNLOCK TABLES;
 
 --
+-- Table structure for table `question_collection`
+--
+
+DROP TABLE IF EXISTS `question_collection`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `question_collection` (
+  `questionid` varchar(32) NOT NULL,
+  `userid` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `question_collection`
+--
+
+LOCK TABLES `question_collection` WRITE;
+/*!40000 ALTER TABLE `question_collection` DISABLE KEYS */;
+INSERT INTO `question_collection` VALUES ('b9b7e710f19749c88616bf6b7c225e3b','bc58cbc441d84ce7ab835e54f9d5303b'),('4e87c67b881e49c980cea6fb6ab5923f','bc58cbc441d84ce7ab835e54f9d5303b');
+/*!40000 ALTER TABLE `question_collection` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `question_option`
 --
 
@@ -285,7 +308,7 @@ CREATE TABLE `t_menu` (
 
 LOCK TABLES `t_menu` WRITE;
 /*!40000 ALTER TABLE `t_menu` DISABLE KEYS */;
-INSERT INTO `t_menu` VALUES (1,'li-icon-xiangmuguanli','问题管理',NULL,NULL,'2',2),(2,'icon-cat-skuQuery','问题管理','N','questions/Question',NULL,NULL),(3,'li-icon-xiangmuguanli','答题','null','null','4',3),(4,'icon-cat-skuQuery','自由回答','N','answer/Answer',NULL,NULL),(5,'li-icon-xiangmuguanli','在线考试',NULL,NULL,'6-7',3),(6,'icon-cat-skuQuery','在线考试','N','answer/Examanswer',NULL,NULL),(7,'icon-cat-skuQuery','随机考试','N','exam/Randomexam',NULL,NULL),(8,'li-icon-xiangmuguanli','考试管理',NULL,NULL,'9',2),(9,'icon-cat-skuQuery','考试管理','N','exam/Exam',NULL,NULL),(10,'li-icon-xiangmuguanli','考试记录',NULL,NULL,'11',3),(11,'icon-cat-skuQuery','考试记录','N','record/Examrecord',NULL,NULL);
+INSERT INTO `t_menu` VALUES (1,'li-icon-xiangmuguanli','问题管理',NULL,NULL,'2',2),(2,'icon-cat-skuQuery','问题管理','N','questions/Question',NULL,NULL),(3,'li-icon-xiangmuguanli','答题','null','null','4',3),(4,'icon-cat-skuQuery','自由回答','N','answer/Answer',NULL,NULL),(5,'li-icon-xiangmuguanli','在线考试',NULL,NULL,'6-7',3),(6,'icon-cat-skuQuery','在线考试','N','answer/Examanswer',NULL,NULL),(7,'icon-cat-skuQuery','随机考试','N','exam/Randomexam',NULL,NULL),(8,'li-icon-xiangmuguanli','考试管理',NULL,NULL,'9',2),(9,'icon-cat-skuQuery','考试管理','N','exam/Exam',NULL,NULL),(10,'li-icon-xiangmuguanli','考试记录',NULL,NULL,'11-12-13',3),(11,'icon-cat-skuQuery','考试记录','N','record/Examrecord',NULL,NULL),(12,'icon-cat-skuQuery','我的收藏','N','record/questioncollection',NULL,NULL),(13,'icon-cat-skuQuery','错题本',NULL,'record/questionwrong',NULL,NULL);
 /*!40000 ALTER TABLE `t_menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -339,7 +362,7 @@ CREATE TABLE `t_user` (
 
 LOCK TABLES `t_user` WRITE;
 /*!40000 ALTER TABLE `t_user` DISABLE KEYS */;
-INSERT INTO `t_user` VALUES ('184513686d4841348fe324de13f6099c','1013662939@qq.com','张三','$2a$10$7pdfMLldPB93I2YHzBQ/B.5Yad5ruT.P84EbLv3465rigLQEci2r6',3,'user1','计科18-2BJ'),('288dbb53b93a4e7d892df8d88e5bdca8','2697055747@qq.com','教师','$2a$10$Qe09srBUsAOtQpnKy/H5GOgacYBqnD1fdoZo6U1d.Jnu5fdowcogK',2,'1','教师'),('bc58cbc441d84ce7ab835e54f9d5303b','2697055747@qq.com','章煜晨','$2a$10$yowYin4yLKf6wzBkKgNgq.1FlY25olxch/vDDdp7MUwNvvo013Q9i',3,'user','计科18-2BJ');
+INSERT INTO `t_user` VALUES ('184513686d4841348fe324de13f6099c','1013662939@qq.com','张三','$2a$10$7pdfMLldPB93I2YHzBQ/B.5Yad5ruT.P84EbLv3465rigLQEci2r6',3,'user1','计科18-2BJ'),('288dbb53b93a4e7d892df8d88e5bdca8','2697055747@qq.com','教师','$2a$10$Qe09srBUsAOtQpnKy/H5GOgacYBqnD1fdoZo6U1d.Jnu5fdowcogK',2,'1','计科'),('bc58cbc441d84ce7ab835e54f9d5303b','2697055747@qq.com','章煜晨','$2a$10$yowYin4yLKf6wzBkKgNgq.1FlY25olxch/vDDdp7MUwNvvo013Q9i',3,'user','计科18-2BJ');
 /*!40000 ALTER TABLE `t_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -352,4 +375,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-08 14:20:10
+-- Dump completed on 2022-04-15  9:22:02
