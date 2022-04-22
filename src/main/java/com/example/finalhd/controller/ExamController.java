@@ -48,6 +48,29 @@ public class ExamController {
     TUserServiceImpl tUserServiceimpl;
 
 
+    @PostMapping("/importpeople")
+    public RespBean  importpeople(@RequestBody List<Map<String,Object>> params) {
+
+        int x=0;
+        System.out.println(params);
+        System.out.println(params.get(0));
+        for(int i=0;i<params.size();i++)
+        {
+            String username=  params.get(i).get("username").toString();
+            String email=  params.get(i).get("email").toString();
+            String nickname=  params.get(i).get("nickName").toString();
+            String classname=  params.get(i).get("ClassName").toString();
+            String userid= IdUtil.simpleUUID();
+            String password="123456";
+            boolean flag=tUserServiceimpl.register(username,password,email,nickname,userid,classname);
+          if(flag)
+          {
+              x++;
+          }
+        }
+        System.out.println(params);
+        return RespBean.ok("111",x);
+    }
     @PostMapping("/addrandomexam")
     public RespBean addrandomexam(@RequestBody Map<String,Object> params)
     {
