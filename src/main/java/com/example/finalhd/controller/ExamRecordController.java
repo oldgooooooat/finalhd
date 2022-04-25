@@ -84,11 +84,22 @@ public class ExamRecordController {
            Map<String,Object> answeroption= examQuestionRecordServiceimpl.getMap(queryWrapper1);//查询该题的回答记录
           Integer correct= (Integer) answeroption.get("correct");
           String answeroptions= (String) answeroption.get("question_option_id");
+
            List<QuestionOption> useransweroption =new ArrayList();
-          if(answeroptions!=null) {
+          if(answeroptions.isBlank()==false) {
               for (String retval : answeroptions.split("-")) {
                   useransweroption.add(questionOptionServiceimpl.getById(retval));
               }
+          }
+           if(answeroptions.isBlank()==true)
+                      {
+           System.out.println(111);
+
+              QuestionOption questionOption=new QuestionOption();
+              questionOption.setQuestionOptionContent("未回答");
+              questionOption.setQuestionOptionId("1111111111111111111111111111111X");
+              questionOption.setQuestionOptionDescription("未回答");
+              useransweroption.add(0,questionOption);
           }
 
 
@@ -107,6 +118,7 @@ public class ExamRecordController {
 //            questionlist.add(questionansweroptions);
            questionlist.add(questions);
        }
+
        String json= JSON.toJSONString(questionlist);
        System.out.println(json);
        return RespBean.ok("111",json);
