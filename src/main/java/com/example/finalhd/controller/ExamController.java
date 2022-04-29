@@ -81,28 +81,14 @@ public class ExamController {
          exam.setExamDescription((String) params.get("context"));
          exam.setQuestionCreatorId((String) params.get("userid"));
          Integer difficulty=Integer.valueOf((String) params.get("difficulty"));
-
-//        Integer difficulty=1;
-//         System.out.println(difficulty);
          exam.setExamTimeLimit(Integer.valueOf((String) params.get("examtime")));
-//        exam.setExamTimeLimit(10);
-//        System.out.println((Integer) params.get("examtime"));
       exam.setExamStartDate(LocalDateTime.now());
       exam.setExamEndDate(LocalDateTime.now().plusDays(999));
       exam.setCreateTime(LocalDateTime.now());
       exam.setUpdateTime(LocalDateTime.now());
       exam.setExamType(1);
-
-
-//    Integer categoryid=1;
-//    int questions=5;
-
       int categoryid= (int) params.get("category");
-//        System.out.println(categoryid);
-
         int questions= Integer.valueOf((String) params.get("questions")).intValue();
-
-//        System.out.println(questions);
          int score=0;
          List<Question> questionList=new ArrayList<>();
          if (difficulty==1)

@@ -52,5 +52,6 @@
         and b.exam_id=c.exam_id
         and d.question_id=a.question_id
         and d.question_category=e.question_category_id
+        order by b.create_time desc
     </select>
 </mapper>
