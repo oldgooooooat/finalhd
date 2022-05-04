@@ -19,6 +19,6 @@ public interface QuestionService extends IService<Question> {
  List<JSONObject> selectallquestion(Integer usertype,String userid);
  int deletequestion(String questionid);
  int deletequestionoption(String questionoptionid);
- JSONObject randomquestion(Integer category,Integer questiontype);
+ JSONObject randomquestion(Integer category,Integer questiontype,Integer difficulty);
  List<Question> getrandomquestions(int category,int number,int level);
 }

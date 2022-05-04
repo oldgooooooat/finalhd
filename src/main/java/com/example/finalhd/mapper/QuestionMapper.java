@@ -20,7 +20,7 @@ public interface QuestionMapper extends BaseMapper<Question> {
   int deletequestion(String questionid);
   int deletequestionoption(String questionoptionid);
   List<JSONObject> selectallquestion(Integer usertype,String userid);
-  JSONObject randomquestion(Integer category,Integer questiontype);
+  JSONObject randomquestion(Integer category,Integer questiontype,Integer difficulty);
   List<Question> getrandomquestion(int category,int number,int level);
 
 }

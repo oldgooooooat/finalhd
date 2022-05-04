@@ -50,6 +50,7 @@
         where a.question_category=b.question_category_id
         and a.question_type_id=#{questiontype}
         and a.question_category=#{category}
+        and a.question_level_id=#{difficulty}
         ORDER BY RAND() LIMIT 1
     </select>
 

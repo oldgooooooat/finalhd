@@ -40,8 +40,8 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
     }
 
     @Override
-    public JSONObject randomquestion(Integer category,Integer questiontype) {
-        return  questionMapper.randomquestion(category,questiontype);
+    public JSONObject randomquestion(Integer category,Integer questiontype,Integer difficulty) {
+        return  questionMapper.randomquestion(category,questiontype,difficulty);
     }
 
     @Override

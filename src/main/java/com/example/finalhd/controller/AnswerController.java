@@ -237,7 +237,9 @@ public class AnswerController {
 
         Integer category = (Integer)params.get("category");
         Integer questiontype = (Integer)params.get("questiontype");
-          JSONObject randomquestion=questionServiceimpl.randomquestion(category,questiontype);
+        Integer difficulty = Integer.valueOf(params.get("difficulty").toString());
+
+        JSONObject randomquestion=questionServiceimpl.randomquestion(category,questiontype,difficulty);
           if(randomquestion!=null) {
               String questionpotion = (String) randomquestion.get("questionOptionIds");
               List<QuestionOption> questionOptions = new ArrayList<>();
