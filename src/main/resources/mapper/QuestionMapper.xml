@@ -24,6 +24,9 @@
        <if test='#{usertype}!="1"'>
            and a.question_creator_id=#{userid}
        </if>
+       <if test="#{input}!=''">
+           and a.question_name like concat('%',#{input},'%')
+       </if>
    </select>
    <delete id="deletequestion" parameterType="com.example.finalhd.entity.Question">
      delete from question where question_id=#{questionid}

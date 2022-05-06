@@ -140,9 +140,10 @@ QuestionCategoryServiceImpl questionCategoryServiceimpl;
     {
         Integer usertype= (Integer) params.get("usertype");
         String userid= (String) params.get("userid");
+       String input= params.get("input").toString();
+System.out.println(params);
 
-
-        List<JSONObject> allquestion=questionServiceimpl.selectallquestion(usertype,userid);
+        List<JSONObject> allquestion=questionServiceimpl.selectallquestion(usertype,userid,input);
         if (allquestion!=null) {
             return RespBean.ok("操作成功", allquestion);
         }

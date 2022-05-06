@@ -343,6 +343,7 @@ public class ExamController {
         Exam exam=new Exam();
         String examid= IdUtil.simpleUUID();
         exam.setExamId(examid);
+        exam.setExamReview(Integer.valueOf(params.get("review").toString()));
         exam.setExamName((String) params.get("name"));
         exam.setExamDescription((String) params.get("context"));
         exam.setQuestionCreatorId((String) params.get("userid"));

@@ -150,6 +150,7 @@ public class ExamRecordController {
 
 
     }
+
     @PostMapping("/addcollectionquestion")
     public RespBean addcollectionquestion(@RequestBody Map<String,Object> params)
     {
@@ -247,6 +248,18 @@ public class ExamRecordController {
         List<JSONObject> questionlist=examRecordServiceimpl.getwrongquestion(userid);
         return RespBean.ok("1",questionlist);
 
+    }
+    @PostMapping("/getcollectionquestion")
+    public RespBean getcollectionquestion(@RequestBody Map<String,Object> params)
+    {
+String userid= (String) params.get("userid");
+String questionid= (String) params.get("questionId");
+QueryWrapper queryWrapper=new QueryWrapper();
+queryWrapper.eq("userid",userid);
+queryWrapper.eq("questionid",questionid);
+ int Returncount =questionCollectionServiceimpl.count(queryWrapper);
+
+        return RespBean.ok("ok",Returncount);
     }
 }
 

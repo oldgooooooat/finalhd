@@ -24,9 +24,9 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
 @Resource
   QuestionMapper questionMapper;
     @Override
-    public List<JSONObject> selectallquestion(Integer usertype,String userid) {
+    public List<JSONObject> selectallquestion(Integer usertype,String userid,String input) {
 
-        return questionMapper.selectallquestion(usertype,userid);
+        return questionMapper.selectallquestion(usertype,userid,input);
     }
 
     @Override
