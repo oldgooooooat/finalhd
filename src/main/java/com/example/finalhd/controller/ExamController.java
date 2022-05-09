@@ -372,6 +372,7 @@ public class ExamController {
              examQuestionServiceimpl.save(examQuestion);
             score=score+question.getQuestionScore();
         }
+      
         exam.setExamScore(score);
         exam.setCreateTime(LocalDateTime.now());
         examServiceimpl.save(exam);
