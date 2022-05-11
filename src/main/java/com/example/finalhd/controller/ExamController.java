@@ -353,6 +353,15 @@ public class ExamController {
         exam.setExamTimeLimit(Integer.valueOf((String) params.get("time")));
         List<String> userlist= (List<String>) params.get("userlist");
 
+        Integer danxuan=Integer.valueOf(params.get("danxuan").toString());
+        Integer duoxuan=Integer.valueOf(params.get("duoxuan").toString());
+        Integer panduan=Integer.valueOf(params.get("panduan").toString());
+        Integer chosedanxuan=0;
+        Integer choseduoxuan=0;
+        Integer chosepanduan=0;
+
+        Integer category=Integer.valueOf(params.get("category").toString());
+
         for (int j=0;j<userlist.size();j++){
             ExamUser examUser=new ExamUser();
             examUser.setExamId(examid);
@@ -365,6 +374,19 @@ public class ExamController {
         for (int i=0;i<answerlist.size();i++)
         {
             Question question=questionServiceimpl.getById(answerlist.get(i));
+            Integer type=question.getQuestionTypeId();
+            if(type==1)
+            {
+                chosedanxuan++;
+            }
+            if(type==2)
+            {
+                choseduoxuan++;
+            }
+            if(type==3)
+            {
+                chosepanduan++;
+            }
             ExamQuestion examQuestion=new ExamQuestion();
             examQuestion.setExamId(examid);
             examQuestion.setQuestionId(question.getQuestionId());
@@ -372,6 +394,107 @@ public class ExamController {
              examQuestionServiceimpl.save(examQuestion);
             score=score+question.getQuestionScore();
         }
+        if(danxuan-chosedanxuan>0)
+        {
+            QueryWrapper queryWrapper=new QueryWrapper();
+            queryWrapper.eq("question_category",category);
+            queryWrapper.eq("question_type_id",1);
+            Integer questioncount=questionServiceimpl.count(queryWrapper);
+            int randomquestion=danxuan-chosedanxuan;
+
+                if((questioncount-chosedanxuan)<randomquestion)
+                {
+                    randomquestion=questioncount-chosedanxuan;
+
+                }
+                while(randomquestion>0){
+                    Integer type=1;
+                Question randomquestiondetail=questionServiceimpl.examrandomquestion(category,type);
+                  QueryWrapper queryWrapper1 =new QueryWrapper();
+                  queryWrapper1.eq("exam_id",examid);
+                  queryWrapper1.eq("question_id",randomquestiondetail.getQuestionId());
+                  if(examQuestionServiceimpl.count(queryWrapper1)==0)
+                  {
+                      ExamQuestion examQuestion=new ExamQuestion();
+                      examQuestion.setExamId(examid);
+                      examQuestion.setQuestionId(randomquestiondetail.getQuestionId());
+                      examQuestion.setId(IdUtil.simpleUUID());
+                      examQuestionServiceimpl.save(examQuestion);
+                      randomquestion--;
+                      score=score+randomquestiondetail.getQuestionScore();
+                  }
+
+                }
+
+        }
+        if(duoxuan-choseduoxuan>0)
+        {
+            QueryWrapper queryWrapper=new QueryWrapper();
+            queryWrapper.eq("question_category",category);
+            queryWrapper.eq("question_type_id",2);
+            Integer questioncount=questionServiceimpl.count(queryWrapper);
+            int randomquestion=duoxuan-choseduoxuan;
+
+            if((questioncount-choseduoxuan)<randomquestion)
+            {
+                randomquestion=questioncount-choseduoxuan;
+
+            }
+            while(randomquestion>0){
+                Integer type=2;
+                Question randomquestiondetail=questionServiceimpl.examrandomquestion(category,type);
+                QueryWrapper queryWrapper1 =new QueryWrapper();
+                queryWrapper1.eq("exam_id",examid);
+                queryWrapper1.eq("question_id",randomquestiondetail.getQuestionId());
+                if(examQuestionServiceimpl.count(queryWrapper1)==0)
+                {
+                    ExamQuestion examQuestion=new ExamQuestion();
+                    examQuestion.setExamId(examid);
+                    examQuestion.setQuestionId(randomquestiondetail.getQuestionId());
+                    examQuestion.setId(IdUtil.simpleUUID());
+                    examQuestionServiceimpl.save(examQuestion);
+                    randomquestion--;
+                    score=score+randomquestiondetail.getQuestionScore();
+                }
+
+            }
+
+        }
+        if(panduan-chosepanduan>0)
+        {
+            QueryWrapper queryWrapper=new QueryWrapper();
+            queryWrapper.eq("question_category",category);
+            queryWrapper.eq("question_type_id",3);
+            Integer questioncount=questionServiceimpl.count(queryWrapper);
+            int randomquestion=panduan-chosepanduan;
+
+            if((questioncount-chosepanduan)<randomquestion)
+            {
+                randomquestion=questioncount-chosepanduan;
+
+            }
+            while(randomquestion>0){
+                Integer type=3;
+                Question randomquestiondetail=questionServiceimpl.examrandomquestion(category,type);
+                QueryWrapper queryWrapper1 =new QueryWrapper();
+                queryWrapper1.eq("exam_id",examid);
+                queryWrapper1.eq("question_id",randomquestiondetail.getQuestionId());
+                if(examQuestionServiceimpl.count(queryWrapper1)==0)
+                {
+                    ExamQuestion examQuestion=new ExamQuestion();
+                    examQuestion.setExamId(examid);
+                    examQuestion.setQuestionId(randomquestiondetail.getQuestionId());
+                    examQuestion.setId(IdUtil.simpleUUID());
+                    examQuestionServiceimpl.save(examQuestion);
+                    randomquestion--;
+                    score=score+randomquestiondetail.getQuestionScore();
+                }
+
+            }
+
+        }
+
+
       
         exam.setExamScore(score);
         exam.setCreateTime(LocalDateTime.now());

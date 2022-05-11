@@ -49,7 +49,10 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         return questionMapper.getrandomquestion(category,number,level);
     }
 
-
+    @Override
+    public Question examrandomquestion(Integer category, Integer type) {
+        return questionMapper.examrandomquestion(category,type);
+    }
 
 
 }

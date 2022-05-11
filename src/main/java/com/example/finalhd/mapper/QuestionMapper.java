@@ -22,5 +22,6 @@ public interface QuestionMapper extends BaseMapper<Question> {
   List<JSONObject> selectallquestion(Integer usertype,String userid,String input);
   JSONObject randomquestion(Integer category,Integer questiontype,Integer difficulty);
   List<Question> getrandomquestion(int category,int number,int level);
+  Question examrandomquestion(Integer category,Integer questiontype);
 
 }

@@ -65,5 +65,14 @@
         and a.question_level_id=#{level}
         order by rand() limit #{number}
     </select>
+    <select id="examrandomquestion" resultType="com.example.finalhd.entity.Question">
+        select * from
+            question
+        where
+
+          question_type_id=#{questiontype}
+          and question_category=#{category}
+        order by rand() limit 1
+    </select>
 
 </mapper>
