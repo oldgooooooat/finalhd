@@ -23,6 +23,10 @@ import java.util.List;
 public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> implements QuestionService {
 @Resource
   QuestionMapper questionMapper;
+
+    public static void save() {
+    }
+
     @Override
     public List<JSONObject> selectallquestion(Integer usertype,String userid,String input) {
 

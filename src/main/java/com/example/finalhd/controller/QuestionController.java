@@ -3,7 +3,9 @@ package com.example.finalhd.controller;
 
 import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.example.finalhd.entity.Question;
 import com.example.finalhd.entity.QuestionCategory;
 import com.example.finalhd.entity.QuestionOption;
@@ -14,6 +16,8 @@ import com.example.finalhd.service.impl.QuestionCategoryServiceImpl;
 import com.example.finalhd.service.impl.QuestionOptionServiceImpl;
 import com.example.finalhd.service.impl.QuestionServiceImpl;
 import com.example.finalhd.util.RespBean;
+import freemarker.template.utility.StringUtil;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * <p>
@@ -41,6 +46,130 @@ QuestionServiceImpl questionServiceimpl;
 @Resource
 QuestionCategoryServiceImpl questionCategoryServiceimpl;
 
+@PostMapping("/importquestion")
+public RespBean importquestion(@RequestBody  Map<String,Object> param)
+
+{
+    int count=0;
+    String userid= (String) param.get("userid");
+    List<Map<String,Object>> params= (List<Map<String, Object>>) param.get("tabledata");
+System.out.println(params);
+System.out.println(userid);
+    for(int i=0;i<params.size();i++) {
+
+        Question question = new Question();
+        String questionid = IdUtil.simpleUUID();
+        question.setQuestionId(questionid);
+        String questionname = (String) params.get(i).get("questionname");
+        question.setQuestionName(questionname);
+        String questiondescription = (String) params.get(i).get("questiondescription");
+        question.setQuestionDescription(questiondescription);
+        Integer questionscore = Integer.valueOf(params.get(i).get("questionscore").toString());
+        question.setQuestionScore(questionscore);
+        String questionlevel = (String) params.get(i).get("questionlevel");
+        if (questionlevel.equals("易"))
+        {
+            question.setQuestionLevelId(1);
+        }
+        if(questionlevel.equals("中"))
+        {
+             question.setQuestionLevelId(2);
+        }
+        if(questionlevel.equals("难"))
+        {
+             question.setQuestionLevelId(3);
+        }
+        String questioncategory= (String) params.get(i).get("questioncategory");
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.eq("question_category_name",questioncategory);
+         QuestionCategory questionCategory=questionCategoryServiceimpl.getOne(queryWrapper);
+          question.setQuestionCategory(questionCategory.getQuestionCategoryId());
+          String questiontype= (String) params.get(i).get("questiontype");
+        if (questiontype.equals("单选题"))
+        {
+            question.setQuestionTypeId(1);
+        }
+        if(questiontype.equals("多选题"))
+        {
+            question.setQuestionTypeId(2);
+        }
+        if(questiontype.equals("判断题"))
+        {
+            question.setQuestionTypeId(3);
+        }
+        String answeroption= (String) params.get(i).get("answeroption");
+        String answeroptionid = null;
+        for (String retval: answeroption.split("-")){
+           QuestionOption questionOption=new QuestionOption();
+           String optionid=IdUtil.simpleUUID();
+           if(StringUtils.isEmpty(answeroptionid))
+           {
+               answeroptionid=optionid;
+           }
+           else {
+               answeroptionid=answeroptionid+"-"+optionid;
+           }
+           questionOption.setQuestionOptionId(optionid);
+           questionOption.setQuestionOptionContent(retval);
+           questionOptionServiceimpl.save(questionOption);
+        }
+        question.setQuestionAnswerOptionIds(answeroptionid);
+        String questionwrongid=answeroptionid;
+
+        if(question.getQuestionTypeId()!=3)
+        {
+            String questionwrong= (String) params.get(i).get("questionwrong");
+            for (String retval: questionwrong.split("-")){
+                QuestionOption questionOption=new QuestionOption();
+                String optionid=IdUtil.simpleUUID();
+                questionwrongid=questionwrongid+"-"+optionid;
+                questionOption.setQuestionOptionId(optionid);
+                questionOption.setQuestionOptionContent(retval);
+                questionOptionServiceimpl.save(questionOption);
+            }
+            question.setQuestionOptionIds(questionwrongid);
+        }
+        if(question.getQuestionTypeId()==3)
+        {
+
+            if(answeroption.equals("是"))
+            {
+                QuestionOption questionOption=new QuestionOption();
+                String optionid=IdUtil.simpleUUID();
+                questionwrongid=questionwrongid+"-"+optionid;
+                questionOption.setQuestionOptionContent("否");
+                questionOption.setQuestionOptionId(optionid);
+                questionOptionServiceimpl.save(questionOption);
+            }
+            if(answeroption.equals("否"))
+            {
+                QuestionOption questionOption=new QuestionOption();
+                String optionid=IdUtil.simpleUUID();
+                questionwrongid=questionwrongid+"-"+optionid;
+                questionOption.setQuestionOptionContent("是");
+                questionOption.setQuestionOptionId(optionid);
+                questionOptionServiceimpl.save(questionOption);
+            }
+            question.setQuestionOptionIds(questionwrongid);
+
+        }
+        String questionphoto= (String) params.get(i).get("questionphotos");
+        if (questionphoto.equals("无")){
+            question.setQuestionPhotos("");
+        }
+        else{
+            question.setQuestionPhotos(questionphoto);
+        }
+        question.setCreateTime(LocalDateTime.now());
+        question.setUpdateTime(LocalDateTime.now());
+        question.setQuestionCreatorId(userid);
+        getQuestionServiceimpl.save(question);
+        count++;
+
+    }
+    System.out.println(params);
+    return RespBean.ok("Ok",count);
+}
 
 
 
