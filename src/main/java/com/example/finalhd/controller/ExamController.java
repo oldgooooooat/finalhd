@@ -33,6 +33,8 @@ import java.util.UUID;
 @RequestMapping("/exam")
 public class ExamController {
     @Resource
+    QuestionCategoryServiceImpl questionCategoryServiceimpl;
+    @Resource
     ExamServiceImpl examServiceimpl;
     @Resource
     QuestionServiceImpl questionServiceimpl;
@@ -88,6 +90,7 @@ public class ExamController {
       exam.setUpdateTime(LocalDateTime.now());
       exam.setExamType(1);
       int categoryid= (int) params.get("category");
+      exam.setExamCategory(categoryid);
         int questions= Integer.valueOf((String) params.get("questions")).intValue();
          int score=0;
          List<Question> questionList=new ArrayList<>();
@@ -167,6 +170,15 @@ public class ExamController {
         System.out.println(params);
       String userid= (String) params.get("userid");
       List<JSONObject> randomexamlist=examServiceimpl.getrandomexam(userid);
+      for(int i=0;i<randomexamlist.size();i++)
+      {
+          Integer category= (Integer) randomexamlist.get(i).get("examCategory");
+          QueryWrapper queryWrapper1=new QueryWrapper();
+          queryWrapper1.eq("question_category_id",category);
+          QuestionCategory questionCategory=questionCategoryServiceimpl.getOne(queryWrapper1);
+          randomexamlist.get(i).put("category",questionCategory.getQuestionCategoryName());
+      }
+      System.out.println(randomexamlist);
         return RespBean.ok("ok",randomexamlist);
     }
 
@@ -299,6 +311,11 @@ public class ExamController {
         List<JSONObject> examList = examServiceimpl.selectallexam(usertype,userid);
         for(int i=0;i<examList.size();i++)
         {
+            Integer category= (Integer) examList.get(i).get("examCategory");
+            QueryWrapper queryWrapper=new QueryWrapper();
+            queryWrapper.eq("question_category_id",category);
+            QuestionCategory questionCategory=questionCategoryServiceimpl.getOne(queryWrapper);
+            examList.get(i).put("category",questionCategory.getQuestionCategoryName());
            LocalDateTime examStarttime = ((Timestamp) examList.get(i).get("examStartDate")).toLocalDateTime();
            LocalDateTime examEndtime = ((Timestamp) examList.get(i).get("examEndDate")).toLocalDateTime();
 
@@ -361,7 +378,7 @@ public class ExamController {
         Integer chosepanduan=0;
 
         Integer category=Integer.valueOf(params.get("category").toString());
-
+        exam.setExamCategory(category);
         for (int j=0;j<userlist.size();j++){
             ExamUser examUser=new ExamUser();
             examUser.setExamId(examid);

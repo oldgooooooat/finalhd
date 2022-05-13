@@ -22,6 +22,8 @@ import java.util.*;
 @RequestMapping("/answer")
 public class AnswerController {
     @Resource
+    QuestionCategoryServiceImpl questionCategoryServiceimpl;
+    @Resource
     QuestionServiceImpl questionServiceimpl;
     @Resource
     QuestionOptionServiceImpl questionOptionServiceimpl;
@@ -196,7 +198,13 @@ public class AnswerController {
         List<JSONObject> examList = examServiceimpl.selectexamanswer((String) params.get("userid"));
 
         for(int i=0;i<examList.size();i++)
+
         {
+            Integer category= (Integer) examList.get(i).get("examCategory");
+            QueryWrapper queryWrapper1=new QueryWrapper();
+            queryWrapper1.eq("question_category_id",category);
+            QuestionCategory questionCategory=questionCategoryServiceimpl.getOne(queryWrapper1);
+            examList.get(i).put("category",questionCategory.getQuestionCategoryName());
             LocalDateTime examStarttime = ((Timestamp) examList.get(i).get("examStartDate")).toLocalDateTime();
             LocalDateTime examEndtime = ((Timestamp) examList.get(i).get("examEndDate")).toLocalDateTime();
             System.out.println(examEndtime);

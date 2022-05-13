@@ -33,6 +33,7 @@ public class Exam implements Serializable {
 
     private String examDescription;
 
+    private Integer examCategory;
     private Integer examScore;
 
     private Integer examSwitch;
